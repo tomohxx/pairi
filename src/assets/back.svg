@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="300" height="400" version="1.1" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <defs>
+  <filter id="filter4198" x="-.024915" y="-.054278" width="1.0498" height="1.1086" color-interpolation-filters="sRGB">
+   <feGaussianBlur result="blur" stdDeviation="2.51 2.51"/>
+  </filter>
+  <mask id="mask4216" maskUnits="userSpaceOnUse">
+   <rect transform="scale(-1)" x="-451.94" y="-1325.6" width="300.06" height="400.78" ry="40" fill="#ff3737"/>
+  </mask>
+  <mask id="mask4222" maskUnits="userSpaceOnUse">
+   <rect y="652.28" width="300.06" height="400.78" ry="40" fill="#ff3737"/>
+  </mask>
+ </defs>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(0 -652.36)">
+  <rect y="652.28" width="300.06" height="400.78" ry="40"/>
+  <path d="m-4.7688 775.07c-4.8814-33.076-12.077-100.83 3.4899-123.01 20.277-26.12 234.78-20.433 264.59 1.8459 12.9 8.7386-204.16 2.5666-227.41 31.19-22.708 27.368-35.258 133.09-40.677 89.971z" fill="#fff" fill-opacity=".78431" fill-rule="evenodd" filter="url(#filter4198)" mask="url(#mask4222)"/>
+  <path transform="matrix(-1 0 0 -1 451.94 1977.9)" d="m151.74 1025c-3.3268-9.3138-10.248-68.454 5.3182-90.627 20.277-26.12 219.44-16.458 231.56-9.9318 11.074 5.317-178.6 0.0589-204.85 34.866-21.593 30.001-26.501 82.178-32.022 65.692z" fill-opacity=".39216" fill-rule="evenodd" filter="url(#filter4198)" mask="url(#mask4216)"/>
+ </g>
+</svg>
