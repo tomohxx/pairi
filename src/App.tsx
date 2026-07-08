@@ -55,7 +55,9 @@ function App() {
   const tileSlot = Math.max(MAX_TILE_COUNT - handState.melds.length * 3 - handState.tiles.length, 0);
   const meldSlot = Math.max(MAX_MELD_COUNT - Math.floor(handState.tiles.length / 3) - handState.melds.length, 0);
   const canClear = handState.tiles.length > 0 || handState.melds.length > 0;
-  const showResultArea = handState.tiles.length % 3 === 2;
+  const remainder = handState.tiles.length % 3;
+  const pairiMode: null | 1 | 2 = remainder === 0 ? null : remainder === 1 ? 1 : 2;
+  const showResultArea = pairiMode !== null;
 
   const clearHandState = (): void => {
     dispatch({ type: "clear" });
@@ -133,12 +135,13 @@ function App() {
           </div>
         </div>
 
-        {showResultArea ? (
+        {pairiMode ? (
           <ResultArea
             pairiArray={tileCounts.createPairiArray()}
             tileLimits={tileCounts.createTileLimits()}
             numMelds={tileCounts.getNumMelds()}
             fourTileSevenPairs={fourTileSevenPairs}
+            pairiMode={pairiMode}
           />
         ) : null}
       </section>
