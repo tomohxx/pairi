@@ -43,10 +43,35 @@ fn tile_ids_from_mask(mask: u64) -> impl Iterator<Item = usize> {
 }
 
 #[derive(Serialize)]
-struct JsPairiData(i8, Vec<(usize, u32, Vec<usize>)>);
+struct JsPairiData1(i8, u32, Vec<usize>);
 
-#[wasm_bindgen(js_name = calcPairi)]
-pub fn calc_pairi_wasm(
+#[wasm_bindgen(js_name = calcPairi1)]
+pub fn calc_pairi1_wasm(
+    hand: &[u8],
+    tile_limits: &[u8],
+    m: usize,
+    four_tile_seven_pairs: bool,
+    check_hand: bool,
+) -> Result<JsValue, JsError> {
+    let hand = hand_from_slice(hand)?;
+    let tile_limits = tile_limits_from_slice(tile_limits)?;
+    let data =
+        calc_shanten2(&hand, &tile_limits, m, Mode::all(), four_tile_seven_pairs, check_hand)?;
+    let tile_ids: Vec<usize> = tile_ids_from_mask(data.waits).collect();
+    let result = JsPairiData1(
+        data.shanten,
+        tile_ids.iter().map(|&tid| (tile_limits[tid] - hand[tid]) as u32).sum(),
+        tile_ids,
+    );
+
+    serde_wasm_bindgen::to_value(&result).map_err(|error| JsError::new(&error.to_string()))
+}
+
+#[derive(Serialize)]
+struct JsPairiData2(i8, Vec<(usize, u32, Vec<usize>)>);
+
+#[wasm_bindgen(js_name = calcPairi2)]
+pub fn calc_pairi2_wasm(
     hand: &[u8],
     tile_limits: &[u8],
     m: usize,
@@ -58,7 +83,7 @@ pub fn calc_pairi_wasm(
     let data =
         calc_shanten2(&hand, &tile_limits, m, Mode::all(), four_tile_seven_pairs, check_hand)?;
     let tile_ids = tile_ids_from_mask(data.discards);
-    let mut result = JsPairiData(data.shanten, Vec::new());
+    let mut result = JsPairiData2(data.shanten, Vec::new());
 
     for tid in tile_ids {
         let hand = discard(&hand, tid)?;
