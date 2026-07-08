@@ -138,7 +138,6 @@ function App() {
             pairiArray={tileCounts.createPairiArray()}
             tileLimits={tileCounts.createTileLimits()}
             numMelds={tileCounts.getNumMelds()}
-            threePlayer={threePlayer}
             fourTileSevenPairs={fourTileSevenPairs}
           />
         ) : null}

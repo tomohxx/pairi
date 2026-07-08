@@ -9,7 +9,6 @@ type ResultAreaProps = {
   pairiArray: Uint8Array;
   tileLimits: Uint8Array;
   numMelds: number;
-  threePlayer: boolean;
   fourTileSevenPairs: boolean;
 };
 
