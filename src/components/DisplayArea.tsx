@@ -37,13 +37,14 @@ export function DisplayArea({ handState: { tiles, melds }, onRemoveTile, onRemov
                 key={meldIndex}
                 type="button"
                 onClick={() => onRemoveMeld(meldIndex)}
-                className="flex shrink-0 gap-px focus-visible:ring-2 focus-visible:ring-teal-400/80 focus-visible:outline-none"
+                className="flex shrink-0 items-end gap-px focus-visible:ring-2 focus-visible:ring-teal-400/80 focus-visible:outline-none"
               >
                 {meld.tiles.map((tile, tileIndex) => (
                   <TileImage
                     key={`${meldIndex}-${tileIndex}`}
                     tile={tile}
                     size="compact"
+                    rotateLeft={meld.type !== "ankan" && tileIndex === 0}
                     faceDown={meld.type === "ankan" && (tileIndex === 0 || tileIndex === 3)}
                   />
                 ))}
