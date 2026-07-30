@@ -6,6 +6,7 @@ import type { InputMode, Tile, Meld, HandState, Action } from "./lib/types";
 import { InputModeArea } from "./components/InputModeArea";
 import { ResultArea } from "./components/ResultArea";
 import { TileCounts } from "./lib/TileCounts";
+import { Header } from "./components/Header";
 
 const removeTile = (tiles: Tile[], targetTile: Tile): Tile[] => {
   const targetIndex: number = tiles.findIndex(
@@ -57,7 +58,6 @@ function App() {
   const canClear = handState.tiles.length > 0 || handState.melds.length > 0;
   const remainder = handState.tiles.length % 3;
   const pairiMode: null | 1 | 2 = remainder === 0 ? null : remainder === 1 ? 1 : 2;
-  const showResultArea = pairiMode !== null;
 
   const clearHandState = (): void => {
     dispatch({ type: "clear" });
@@ -71,81 +71,82 @@ function App() {
   };
 
   return (
-    <main className="mx-auto flex min-h-svh w-full max-w-380 min-w-0 items-stretch px-4 py-6 lg:px-8">
-      <section
-        className={`grid min-h-0 w-full min-w-0 gap-6 lg:grid-cols-[max-content_minmax(24rem,1fr)] ${showResultArea ? "lg:h-[calc(100svh-3rem)]" : ""}`}
-      >
-        <div className={`flex min-h-0 min-w-0 flex-col gap-4 ${showResultArea ? "lg:h-full" : ""}`}>
-          <DisplayArea
-            handState={handState}
-            onRemoveTile={(tile) => {
-              dispatch({ type: "removeTile", payload: tile });
-            }}
-            onRemoveMeld={(targetIndex) => {
-              dispatch({ type: "removeMeld", payload: targetIndex });
-            }}
-          />
-
-          <CalculationOptions
-            enableRedDora={enableRedDora}
-            threePlayer={threePlayer}
-            fourTileSevenPairs={fourTileSevenPairs}
-            onRedDoraChange={() => {
-              setenableRedDora(!enableRedDora);
-              clearHandState();
-            }}
-            onThreePlayerChange={() => {
-              setThreePlayer(!threePlayer);
-              clearHandState();
-            }}
-            onFourTileSevenPairsChange={() => {
-              setFourTileSevenPairs(!fourTileSevenPairs);
-            }}
-          />
-
-          <div className="flex min-h-0 flex-col text-zinc-100">
-            <div className="shrink-0 pb-3">
-              <h2 className="font-display text-xl font-semibold text-zinc-50">入力</h2>
-            </div>
-
-            <InputModeArea
-              currentInputMode={inputMode}
-              threePlayer={threePlayer}
-              hasTileSlot={tileSlot > 0}
-              hasMeldSlot={meldSlot > 0}
-              canClear={canClear}
-              onInputModeChange={changeInputMode}
-              onClear={clearHandState}
-            />
-
-            <InputTileArea
-              currentInputMode={inputMode}
-              pendingChi={pendingChi}
-              enableRedDora={enableRedDora}
-              canAddTile={(tile) => tile !== null && tileSlot > 0 && tileCounts.canAddTile(tile)}
-              canAddMeld={(meld) => meldSlot > 0 && tileCounts.canAddMeld(meld)}
-              onPendingChiChange={setPendingChi}
-              onAddTile={(tile) => dispatch({ type: "addTile", payload: tile })}
-              onAddMeld={(meld) => {
-                dispatch({ type: "addMeld", payload: meld });
-                setPendingChi(null);
-                meldSlot <= 1 && setInputMode("hand");
+    <>
+      <Header title="牌理・牌効率計算ツール" />
+      <main className="mx-auto flex min-h-[calc(100svh-3.5rem)] w-full max-w-380 min-w-0 items-stretch px-4 py-6 lg:px-8">
+        <section className="grid min-h-0 w-full min-w-0 gap-6 lg:grid-cols-[max-content_minmax(24rem,1fr)]">
+          <div className="flex min-h-0 min-w-0 flex-col gap-4">
+            <DisplayArea
+              handState={handState}
+              onRemoveTile={(tile) => {
+                dispatch({ type: "removeTile", payload: tile });
+              }}
+              onRemoveMeld={(targetIndex) => {
+                dispatch({ type: "removeMeld", payload: targetIndex });
               }}
             />
-          </div>
-        </div>
 
-        {pairiMode ? (
-          <ResultArea
-            pairiArray={tileCounts.createPairiArray()}
-            tileLimits={tileCounts.createTileLimits()}
-            numMelds={tileCounts.getNumMelds()}
-            fourTileSevenPairs={fourTileSevenPairs}
-            pairiMode={pairiMode}
-          />
-        ) : null}
-      </section>
-    </main>
+            <CalculationOptions
+              enableRedDora={enableRedDora}
+              threePlayer={threePlayer}
+              fourTileSevenPairs={fourTileSevenPairs}
+              onRedDoraChange={() => {
+                setenableRedDora(!enableRedDora);
+                clearHandState();
+              }}
+              onThreePlayerChange={() => {
+                setThreePlayer(!threePlayer);
+                clearHandState();
+              }}
+              onFourTileSevenPairsChange={() => {
+                setFourTileSevenPairs(!fourTileSevenPairs);
+              }}
+            />
+
+            <div className="flex min-h-0 flex-col text-zinc-100">
+              <div className="shrink-0 pb-3">
+                <h2 className="font-display text-xl font-semibold text-zinc-50">入力</h2>
+              </div>
+
+              <InputModeArea
+                currentInputMode={inputMode}
+                threePlayer={threePlayer}
+                hasTileSlot={tileSlot > 0}
+                hasMeldSlot={meldSlot > 0}
+                canClear={canClear}
+                onInputModeChange={changeInputMode}
+                onClear={clearHandState}
+              />
+
+              <InputTileArea
+                currentInputMode={inputMode}
+                pendingChi={pendingChi}
+                enableRedDora={enableRedDora}
+                canAddTile={(tile) => tile !== null && tileSlot > 0 && tileCounts.canAddTile(tile)}
+                canAddMeld={(meld) => meldSlot > 0 && tileCounts.canAddMeld(meld)}
+                onPendingChiChange={setPendingChi}
+                onAddTile={(tile) => dispatch({ type: "addTile", payload: tile })}
+                onAddMeld={(meld) => {
+                  dispatch({ type: "addMeld", payload: meld });
+                  setPendingChi(null);
+                  meldSlot <= 1 && setInputMode("hand");
+                }}
+              />
+            </div>
+          </div>
+
+          {pairiMode ? (
+            <ResultArea
+              pairiArray={tileCounts.createPairiArray()}
+              tileLimits={tileCounts.createTileLimits()}
+              numMelds={tileCounts.getNumMelds()}
+              fourTileSevenPairs={fourTileSevenPairs}
+              pairiMode={pairiMode}
+            />
+          ) : null}
+        </section>
+      </main>
+    </>
   );
 }
 

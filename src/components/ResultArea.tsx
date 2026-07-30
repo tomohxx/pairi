@@ -95,7 +95,7 @@ export function ResultArea({ pairiArray, tileLimits, numMelds, fourTileSevenPair
   }
 
   return (
-    <section className="flex w-full min-w-0 flex-col self-start text-zinc-100 lg:max-h-full lg:min-h-0 lg:overflow-y-auto">
+    <section className="flex w-full min-w-0 flex-col self-start text-zinc-100">
       <div className="pb-3">
         <h2 className="font-display text-xl font-semibold text-zinc-50">{formatShanten(shanten)}</h2>
       </div>
