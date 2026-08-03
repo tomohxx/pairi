@@ -20,10 +20,17 @@ const removeMeld = (melds: Meld[], index: number): Meld[] => melds.toSpliced(ind
 
 const clear = (): HandState => ({ tiles: [], melds: [] });
 
+const suitOrder = { m: 0, p: 1, s: 2, z: 3 } as const;
+
 const reducer = (handState: HandState, action: Action): HandState => {
   switch (action.type) {
     case "addTile":
-      return { ...handState, tiles: [...handState.tiles, { ...action.payload }] };
+      return {
+        ...handState,
+        tiles: [...handState.tiles, { ...action.payload }].sort(
+          (a, b) => suitOrder[a.suit] - suitOrder[b.suit] || a.index - b.index || +!!a.isRed - +!!b.isRed,
+        ),
+      };
     case "addMeld":
       return { ...handState, melds: [...handState.melds, { ...action.payload }] };
     case "removeTile":

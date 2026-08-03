@@ -2,8 +2,6 @@ import type { Tile, HandState } from "../lib/types";
 import { TileImage } from "./TileImage";
 import { TileButton } from "./TileButton";
 
-const suitOrder = { m: 0, p: 1, s: 2, z: 3 } as const;
-
 type DisplayAreaProps = {
   handState: HandState;
   onRemoveTile: (tile: Tile) => void;
@@ -12,10 +10,6 @@ type DisplayAreaProps = {
 
 export function DisplayArea({ handState: { tiles, melds }, onRemoveTile, onRemoveMeld }: DisplayAreaProps) {
   const hasTiles = tiles.length > 0 || melds.length > 0;
-
-  const sortedTiles = tiles.toSorted(
-    (a, b) => suitOrder[a.suit] - suitOrder[b.suit] || a.index - b.index || +!!a.isRed - +!!b.isRed,
-  );
 
   return (
     <div>
@@ -27,7 +21,7 @@ export function DisplayArea({ handState: { tiles, melds }, onRemoveTile, onRemov
         {hasTiles ? (
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <div className="flex flex-nowrap gap-px">
-              {sortedTiles.map((tile, index) => (
+              {tiles.map((tile, index) => (
                 <TileButton key={index} tile={tile} onClick={onRemoveTile} size="compact" />
               ))}
             </div>
