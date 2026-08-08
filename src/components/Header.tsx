@@ -5,7 +5,7 @@ type HeaderProps = {
 
 export function Header({ title, onHistoryOpen }: HeaderProps) {
   return (
-    <header className="bg-table-felt-dark sticky top-0 z-20 h-14 border-b border-zinc-700">
+    <header className="bg-background sticky top-0 z-20 h-14 border-b border-zinc-700">
       <div className="mx-auto flex h-full w-full max-w-380 items-center justify-between gap-4 px-4 lg:px-8">
         <h1 className="font-display text-2xl font-semibold text-zinc-50">{title}</h1>
         <button

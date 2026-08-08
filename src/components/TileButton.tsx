@@ -27,7 +27,7 @@ export function TileButton({
       type="button"
       onClick={() => onClick(tile)}
       disabled={appearance !== "default"}
-      className="focus-visible:ring-offset-table-felt-dark rounded bg-transparent p-0 focus-visible:ring-2 focus-visible:ring-teal-400/80 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
+      className="focus-visible:ring-offset-background rounded bg-transparent p-0 focus-visible:ring-2 focus-visible:ring-teal-400/80 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
     >
       <TileImage tile={tile} size={size} className={tileButtonClass[appearance]} faceDown={faceDown} />
     </button>

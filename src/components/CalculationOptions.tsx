@@ -87,7 +87,7 @@ export function ToggleButton({ label, enabled, onChange }: ToggleButtonProps) {
       <Switch
         checked={enabled}
         onChange={onChange}
-        className="group relative h-5 w-9 shrink-0 rounded-full bg-zinc-700 transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none data-checked:bg-teal-500"
+        className="group relative h-5 w-9 shrink-0 rounded-full bg-zinc-700 transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none data-checked:bg-teal-400"
       >
         <span className="absolute top-0.5 left-0.5 size-4 rounded-full bg-zinc-100 transition-transform group-data-checked:translate-x-4" />
       </Switch>
@@ -109,7 +109,7 @@ function WindButtonGroup({ label, value, onChange }: WindButtonGroupProps) {
         {winds.map((wind) => (
           <label
             key={wind.value}
-            className="relative flex h-6 cursor-pointer items-center justify-center border-r border-zinc-700 text-sm font-semibold text-zinc-300 last:border-r-0 has-checked:bg-teal-500 has-checked:text-zinc-950 has-focus-visible:z-10 has-focus-visible:ring-2 has-focus-visible:ring-teal-400"
+            className="relative flex h-6 cursor-pointer items-center justify-center border-r border-zinc-700 text-sm font-semibold text-zinc-300 last:border-r-0 has-checked:bg-teal-400 has-checked:text-zinc-950 has-focus-visible:z-10 has-focus-visible:ring-2 has-focus-visible:ring-teal-400"
           >
             <input
               type="radio"
@@ -147,7 +147,7 @@ function TurnListbox({ value, onChange }: TurnListboxProps) {
               <ListboxOption
                 key={turn}
                 value={turn}
-                className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-500 focus:text-zinc-950 data-selected:bg-teal-500 data-selected:text-zinc-950"
+                className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-400 focus:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950"
               >
                 {turn}巡目
               </ListboxOption>
@@ -179,7 +179,7 @@ function NukidoraListbox({ value, onChange }: NukidoraListboxProps) {
               <ListboxOption
                 key={count}
                 value={count}
-                className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-500 focus:text-zinc-950 data-selected:bg-teal-500 data-selected:text-zinc-950"
+                className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-400 focus:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950"
               >
                 {count}
               </ListboxOption>

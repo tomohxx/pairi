@@ -38,7 +38,7 @@ export function TileImage({
 }: TileImageProps) {
   const TileComponent = TileComponents[faceDown ? "back" : `${tile.suit}${tile.index + 1}${tile.isRed ? "r" : ""}`];
   const imageSizeClass = rotateLeft ? tileImageClassBySize.compact : tileImageClassBySize[size];
-  const tileClassName = `block shrink-0 overflow-hidden rounded border border-stone-300/85 w-auto ${imageSizeClass} ${className ? className : "bg-paper-warm"}`;
+  const tileClassName = `block shrink-0 overflow-hidden rounded border border-stone-300/85 w-auto ${imageSizeClass} ${className ? className : "bg-zinc-200"}`;
 
   if (rotateLeft) {
     return (

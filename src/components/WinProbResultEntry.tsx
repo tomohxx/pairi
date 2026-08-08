@@ -207,7 +207,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
                     <ListboxOption
                       key={value}
                       value={value}
-                      className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-500 focus:text-zinc-950 data-selected:bg-teal-500 data-selected:text-zinc-950"
+                      className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-400 focus:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950"
                     >
                       {value}巡目
                     </ListboxOption>
