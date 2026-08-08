@@ -13,11 +13,11 @@ export function DisplayArea({ handState: { tiles, melds }, onRemoveTile, onRemov
 
   return (
     <div>
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="font-display text-xl font-semibold text-zinc-50">手牌</h2>
+      <div className="flex items-center justify-between gap-4 pb-3">
+        <h2 className="font-display font-semibold text-zinc-50">手牌</h2>
       </div>
 
-      <div className="mt-4 min-h-[3.6rem]">
+      <div className="min-h-[2rem] sm:min-h-[3rem]">
         {hasTiles ? (
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <div className="flex flex-nowrap gap-px">
@@ -46,8 +46,8 @@ export function DisplayArea({ handState: { tiles, melds }, onRemoveTile, onRemov
             ))}
           </div>
         ) : (
-          <div className="flex min-h-[3.6rem] items-center justify-center rounded-md border border-dashed border-zinc-700 bg-zinc-900 px-6 text-center text-sm leading-7 text-zinc-400">
-            入力エリアから牌を選ぶと、ここに理牌して表示されます
+          <div className="flex min-h-[2rem] items-center justify-center rounded border border-dashed border-zinc-700 bg-zinc-900 px-6 text-center text-sm leading-7 text-zinc-400 sm:min-h-[3rem]">
+            手牌モードから牌を選ぶと、ここに理牌して表示されます
           </div>
         )}
       </div>

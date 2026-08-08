@@ -1,0 +1,293 @@
+import { ClipLoader } from "react-spinners";
+import { useState } from "react";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import { HiChevronDown, HiChevronUp, HiChevronUpDown } from "react-icons/hi2";
+import type { Tile, HistoryEntry, WindType, WinProbResult } from "../lib/types";
+import { TileImage } from "./TileImage";
+
+const windLabels: Record<WindType, string> = {
+  east: "東",
+  south: "南",
+  west: "西",
+  north: "北",
+};
+
+type SnapshotProps = {
+  entry: HistoryEntry;
+};
+
+function Snapshot({ entry }: SnapshotProps) {
+  const settings = [
+    `赤ドラ: ${entry.useRed ? "有効" : "無効"}`,
+    `三人麻雀: ${entry.threePlayer ? "有効" : "無効"}`,
+    `向聴戻し・手変わり: ${entry.useExtra ? "有効" : "無効"}`,
+    `立直: ${entry.riichi ? "有効" : "無効"}`,
+    `${windLabels[entry.seatWind]}家`,
+    `${windLabels[entry.roundWind]}場`,
+  ].join("、");
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <p className="mb-1 text-xs font-semibold text-zinc-400">設定</p>
+        <p className="text-sm text-zinc-300">{settings}</p>
+      </div>
+
+      {entry.doraIndicators.length > 0 ? (
+        <div>
+          <p className="mb-1 text-xs font-semibold text-zinc-400">ドラ表示牌</p>
+          <div className="flex flex-nowrap gap-px">
+            {entry.doraIndicators.map((tile, index) => (
+              <TileImage key={index} tile={tile} size="compact" />
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <div>
+        <p className="mb-1 text-xs font-semibold text-zinc-400">手牌</p>
+        <div className="flex flex-wrap items-end gap-2">
+          <div className="flex flex-nowrap gap-px">
+            {entry.handState.tiles.map((tile, index) => (
+              <TileImage key={index} tile={tile} size="compact" />
+            ))}
+          </div>
+
+          {entry.handState.melds.map((meld, meldIndex) => (
+            <div key={meldIndex} className="flex shrink-0 items-end gap-px">
+              {meld.tiles.map((tile, tileIndex) => (
+                <TileImage
+                  key={`${meldIndex}-${tileIndex}`}
+                  tile={tile}
+                  size="compact"
+                  rotateLeft={meld.type !== "ankan" && tileIndex === 0}
+                  faceDown={meld.type === "ankan" && (tileIndex === 0 || tileIndex === 3)}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const fromApiTile = (tile: string): Tile => {
+  return (
+    tile[0] === "r"
+      ? { suit: tile[2], index: 4, isRed: true }
+      : { suit: tile[1], index: Number(tile[0]) - 1, isRed: false }
+  ) as Tile;
+};
+
+const formatProb = (prob: number): string => (prob * 100).toFixed(1);
+const formatScore = (score: number): string => score.toFixed(1);
+const formatShanten = (shanten: number): string =>
+  shanten === -1 ? "和了" : shanten === 0 ? "聴牌" : `${shanten}向聴`;
+const formatElapsed = (microseconds: number): string => (microseconds / 1000).toFixed(1);
+
+type SortColumn = "tile" | "tenpaiProb" | "winningProb" | "expectedScore";
+type SortDirection = "ascending" | "descending";
+type SortState = { column: SortColumn; direction: SortDirection } | null;
+
+const suitOrder = { m: 0, p: 1, s: 2, z: 3 } as const;
+
+const compareTiles = (left: string, right: string): number => {
+  const leftTile = fromApiTile(left);
+  const rightTile = fromApiTile(right);
+
+  return (
+    suitOrder[leftTile.suit] - suitOrder[rightTile.suit] ||
+    leftTile.index - rightTile.index ||
+    +!!leftTile.isRed - +!!rightTile.isRed
+  );
+};
+
+const compareResults = (left: WinProbResult, right: WinProbResult, column: SortColumn, turn: number): number => {
+  switch (column) {
+    case "tile":
+      return compareTiles(left.tile, right.tile);
+    case "tenpaiProb":
+      return left.tenpaiProb[turn] - right.tenpaiProb[turn];
+    case "winningProb":
+      return left.winningProb[turn] - right.winningProb[turn];
+    case "expectedScore":
+      return left.expectedScore[turn] - right.expectedScore[turn];
+  }
+};
+
+type SortableHeaderProps = {
+  column: SortColumn;
+  label: string;
+  numeric?: boolean;
+  sortState: SortState;
+  onSort: (column: SortColumn) => void;
+};
+
+function SortableHeader({ column, label, numeric = false, sortState, onSort }: SortableHeaderProps) {
+  const direction = sortState?.column === column ? sortState.direction : null;
+  const SortIcon =
+    direction === "ascending" ? HiChevronUp : direction === "descending" ? HiChevronDown : HiChevronUpDown;
+
+  return (
+    <th className={`px-2 py-2 ${numeric ? "text-right" : "text-left"}`} aria-sort={direction ?? "none"}>
+      <button
+        type="button"
+        onClick={() => onSort(column)}
+        className={`inline-flex items-center gap-1 rounded-sm hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none ${
+          direction ? "text-teal-400" : "text-zinc-400"
+        }`}
+      >
+        <span>{label}</span>
+        <SortIcon aria-hidden="true" className="size-4 shrink-0" />
+      </button>
+    </th>
+  );
+}
+
+type ResultTableProps = {
+  entry: Extract<HistoryEntry, { status: "success" }>;
+  open: boolean;
+};
+
+function ResultTable({ entry, open }: ResultTableProps) {
+  const [turn, setTurn] = useState(Math.min(1, entry.tMax));
+  const [sortState, setSortState] = useState<SortState>(null);
+
+  const handleSort = (column: SortColumn) => {
+    setSortState((current) => ({
+      column,
+      direction: current?.column === column && current.direction === "ascending" ? "descending" : "ascending",
+    }));
+  };
+
+  const sortedResults = sortState
+    ? entry.result.results
+        .map((result, index) => ({ result, index }))
+        .sort((left, right) => {
+          const comparison = compareResults(left.result, right.result, sortState.column, turn);
+          return (sortState.direction === "ascending" ? comparison : -comparison) || left.index - right.index;
+        })
+        .map(({ result }) => result)
+    : entry.result.results;
+
+  return (
+    <details open={open} className="group">
+      <summary className="cursor-pointer text-sm font-semibold text-zinc-200 marker:text-teal-400 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+        計算結果
+      </summary>
+
+      <div className="mt-3 space-y-3">
+        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+          <span>向聴数</span>
+          <span>{formatShanten(entry.result.shanten)}</span>
+        </div>
+
+        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+          <span>探索手牌数</span>
+          <span>{entry.result.searched}</span>
+        </div>
+
+        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+          <span>処理時間</span>
+          <span>{formatElapsed(entry.result.elapsed)} ms</span>
+        </div>
+
+        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+          <span>現在巡目/最終巡目</span>
+          <div className="flex items-center gap-1">
+            <Listbox value={turn} onChange={setTurn}>
+              <div className="relative">
+                <ListboxButton className="relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold text-zinc-300 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+                  <span>{turn}巡目</span>
+                  <HiChevronUpDown aria-hidden="true" className="absolute right-1 size-4 text-zinc-400" />
+                </ListboxButton>
+                <ListboxOptions className="absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900 py-1 shadow-xl focus:outline-none">
+                  {Array.from({ length: entry.tMax + 1 }, (_, value) => (
+                    <ListboxOption
+                      key={value}
+                      value={value}
+                      className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-500 focus:text-zinc-950 data-selected:bg-teal-500 data-selected:text-zinc-950"
+                    >
+                      {value}巡目
+                    </ListboxOption>
+                  ))}
+                </ListboxOptions>
+              </div>
+            </Listbox>
+            <span>/{entry.tMax}巡目</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-130 text-sm">
+          <thead className="border-b border-zinc-700 text-left text-xs font-medium text-zinc-400">
+            <tr>
+              <SortableHeader column="tile" label="打牌候補" sortState={sortState} onSort={handleSort} />
+              <SortableHeader
+                column="tenpaiProb"
+                label="聴牌率 (%)"
+                numeric
+                sortState={sortState}
+                onSort={handleSort}
+              />
+              <SortableHeader
+                column="winningProb"
+                label="和了率 (%)"
+                numeric
+                sortState={sortState}
+                onSort={handleSort}
+              />
+              <SortableHeader
+                column="expectedScore"
+                label="点数期待値 (点)"
+                numeric
+                sortState={sortState}
+                onSort={handleSort}
+              />
+            </tr>
+          </thead>
+          <tbody>
+            {sortedResults.map((result) => (
+              <tr key={result.tile} className="border-b border-zinc-800 text-zinc-100">
+                <td className="px-2 py-2">
+                  <TileImage tile={fromApiTile(result.tile)} size="compact" />
+                </td>
+                <td className="px-2 py-2 text-right tabular-nums">{formatProb(result.tenpaiProb[turn])}</td>
+                <td className="px-2 py-2 text-right tabular-nums">{formatProb(result.winningProb[turn])}</td>
+                <td className="px-2 py-2 text-right tabular-nums">{formatScore(result.expectedScore[turn])}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </details>
+  );
+}
+
+type WinProbResultEntryProps = {
+  entry: HistoryEntry;
+  isLatest: boolean;
+};
+
+export function WinProbResultEntry({ entry, isLatest }: WinProbResultEntryProps) {
+  return (
+    <article className="space-y-4 border-b border-zinc-800 pb-5 last:border-b-0 last:pb-0">
+      <Snapshot entry={entry} />
+
+      {entry.status === "pending" ? (
+        <div className="flex min-h-36 flex-col items-center justify-center gap-3 text-sm text-zinc-300">
+          <ClipLoader color="#2dd4bf" size={28} />
+          <p>計算中...</p>
+        </div>
+      ) : null}
+
+      {entry.status === "error" ? (
+        <p className="text-sm text-rose-300">{entry.errorType === "timeout" ? "タイムアウト" : "エラー"}</p>
+      ) : null}
+
+      {entry.status === "success" ? <ResultTable entry={entry} open={isLatest} /> : null}
+    </article>
+  );
+}

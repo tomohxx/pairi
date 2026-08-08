@@ -2,11 +2,16 @@ import { useState, useReducer } from "react";
 import { InputTileArea } from "./components/InputTileArea";
 import { DisplayArea } from "./components/DisplayArea";
 import { CalculationOptions } from "./components/CalculationOptions";
-import type { InputMode, Tile, Meld, HandState, Action } from "./lib/types";
+import type { InputMode, Tile, Meld, HandState, Action, HistoryEntry, WindType } from "./lib/types";
 import { InputModeArea } from "./components/InputModeArea";
 import { ResultArea } from "./components/ResultArea";
 import { TileCounts } from "./lib/TileCounts";
 import { Header } from "./components/Header";
+import { WinProbButton } from "./components/WinProbButton";
+import { Drawer } from "./components/Drawer";
+import { WinProbResultEntry } from "./components/WinProbResultEntry";
+import { DoraIndicatorsArea } from "./components/DoraIndicatorsArea";
+import { createWinProbRequest, execWinProbApi } from "./lib/winProbApi";
 
 const removeTile = (tiles: Tile[], targetTile: Tile): Tile[] => {
   const targetIndex: number = tiles.findIndex(
@@ -50,24 +55,40 @@ const reducer = (handState: HandState, action: Action): HandState => {
 
 const MAX_TILE_COUNT = 14;
 const MAX_MELD_COUNT = 4;
+const MAX_DORA_INDICATOR_COUNT = 5;
 
 function App() {
   const [handState, dispatch] = useReducer(reducer, clear());
+  const [doraIndicators, setDoraIndicators] = useState<Tile[]>([]);
   const [inputMode, setInputMode] = useState<InputMode>("hand");
   const [pendingChi, setPendingChi] = useState<Tile | null>(null);
-  const [enableRedDora, setenableRedDora] = useState<boolean>(true);
+  const [useRed, setUseRed] = useState<boolean>(true);
   const [threePlayer, setThreePlayer] = useState<boolean>(false);
   const [fourTileSevenPairs, setFourTileSevenPairs] = useState<boolean>(false);
+  const [useExtra, setUseExtra] = useState<boolean>(false);
+  const [riichi, setRiichi] = useState<boolean>(false);
+  const [seatWind, setSeatWind] = useState<WindType>("east");
+  const [roundWind, setRoundWind] = useState<WindType>("east");
+  const [tMax, setTMax] = useState<number>(18);
+  const [numNukidora, setNumNukidora] = useState<number>(0);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [nextHistoryEntryId, setNextHistoryEntryId] = useState<number>(1);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
-  const tileCounts = new TileCounts(handState, enableRedDora, threePlayer);
+  const tileCounts = new TileCounts(handState, doraIndicators, useRed, threePlayer);
   const tileSlot = Math.max(MAX_TILE_COUNT - handState.melds.length * 3 - handState.tiles.length, 0);
   const meldSlot = Math.max(MAX_MELD_COUNT - Math.floor(handState.tiles.length / 3) - handState.melds.length, 0);
-  const canClear = handState.tiles.length > 0 || handState.melds.length > 0;
+  const hasDoraIndicatorSlot = doraIndicators.length < MAX_DORA_INDICATOR_COUNT;
+  const canClear = handState.tiles.length > 0 || handState.melds.length > 0 || doraIndicators.length > 0;
   const remainder = handState.tiles.length % 3;
   const pairiMode: null | 1 | 2 = remainder === 0 ? null : remainder === 1 ? 1 : 2;
+  const hasPendingHistoryEntry = history.some((entry) => entry.status === "pending");
+  const canCalcExpectation =
+    handState.tiles.length + handState.melds.length * 3 === MAX_TILE_COUNT && !hasPendingHistoryEntry;
 
   const clearHandState = (): void => {
     dispatch({ type: "clear" });
+    setDoraIndicators([]);
     setInputMode("hand");
     setPendingChi(null);
   };
@@ -77,12 +98,128 @@ function App() {
     setPendingChi(null);
   };
 
+  const calcExpectation = (): void => {
+    if (!canCalcExpectation) {
+      return;
+    }
+
+    const request = createWinProbRequest(
+      handState,
+      seatWind,
+      roundWind,
+      doraIndicators,
+      riichi,
+      tMax,
+      useRed,
+      useExtra,
+      threePlayer,
+      threePlayer ? numNukidora : undefined,
+    );
+    const id = nextHistoryEntryId;
+    const createdAt = new Date().toISOString();
+
+    setNextHistoryEntryId((prev) => prev + 1);
+    setHistory((prev) => [
+      ...prev,
+      {
+        id,
+        handState,
+        seatWind: request.seatWind,
+        roundWind: request.roundWind,
+        doraIndicators: [...doraIndicators],
+        riichi,
+        tMax: request.tMax,
+        useRed: request.useRed,
+        useExtra: request.useExtra,
+        threePlayer,
+        numNukidora: request.numNukidora,
+        status: "pending",
+        createdAt,
+      },
+    ]);
+    setIsDrawerOpen(true);
+
+    void (async () => {
+      const controller = new AbortController();
+      let timedOut = false;
+      const timeoutId = window.setTimeout(
+        () => {
+          timedOut = true;
+          controller.abort();
+        },
+        Number(import.meta.env.VITE_REQUEST_TIMEOUT),
+      );
+
+      try {
+        const result = await execWinProbApi(request, controller.signal);
+        const completedAt = new Date().toISOString();
+
+        setHistory((prev) =>
+          prev.map((entry) => (entry.id === id ? { ...entry, status: "success", completedAt, result } : entry)),
+        );
+      } catch {
+        const completedAt = new Date().toISOString();
+
+        setHistory((prev) =>
+          prev.map((entry) =>
+            entry.id === id
+              ? { ...entry, status: "error", completedAt, errorType: timedOut ? "timeout" : "request" }
+              : entry,
+          ),
+        );
+      } finally {
+        window.clearTimeout(timeoutId);
+      }
+    })();
+  };
+
   return (
     <>
-      <Header title="牌理・牌効率計算ツール" />
+      <Header title="牌理・牌効率計算ツール" onHistoryOpen={() => setIsDrawerOpen(true)} />
       <main className="mx-auto flex min-h-[calc(100svh-3.5rem)] w-full max-w-380 min-w-0 items-stretch px-4 py-6 lg:px-8">
         <section className="grid min-h-0 w-full min-w-0 gap-6 lg:grid-cols-[max-content_minmax(24rem,1fr)]">
           <div className="flex min-h-0 min-w-0 flex-col gap-4">
+            <CalculationOptions
+              useRed={useRed}
+              threePlayer={threePlayer}
+              fourTileSevenPairs={fourTileSevenPairs}
+              useExtra={useExtra}
+              riichi={riichi}
+              seatWind={seatWind}
+              roundWind={roundWind}
+              tMax={tMax}
+              numNukidora={numNukidora}
+              onRedDoraChange={() => {
+                setUseRed(!useRed);
+                clearHandState();
+              }}
+              onThreePlayerChange={(enabled) => {
+                setThreePlayer(enabled);
+                if (!enabled) {
+                  setNumNukidora(0);
+                }
+                clearHandState();
+              }}
+              onFourTileSevenPairsChange={() => {
+                setFourTileSevenPairs(!fourTileSevenPairs);
+              }}
+              onUseExtraChange={() => {
+                setUseExtra(!useExtra);
+              }}
+              onRiichiChange={setRiichi}
+              onSeatWindChange={setSeatWind}
+              onRoundWindChange={setRoundWind}
+              onTMaxChange={setTMax}
+              onNumNukidoraChange={setNumNukidora}
+            />
+
+            <DoraIndicatorsArea
+              doraIndicators={doraIndicators}
+              onRemoveDoraIndicator={(targetIndex) => {
+                setDoraIndicators((prev) => prev.toSpliced(targetIndex, 1));
+              }}
+            />
+
             <DisplayArea
               handState={handState}
               onRemoveTile={(tile) => {
@@ -93,32 +230,16 @@ function App() {
               }}
             />
 
-            <CalculationOptions
-              enableRedDora={enableRedDora}
-              threePlayer={threePlayer}
-              fourTileSevenPairs={fourTileSevenPairs}
-              onRedDoraChange={() => {
-                setenableRedDora(!enableRedDora);
-                clearHandState();
-              }}
-              onThreePlayerChange={() => {
-                setThreePlayer(!threePlayer);
-                clearHandState();
-              }}
-              onFourTileSevenPairsChange={() => {
-                setFourTileSevenPairs(!fourTileSevenPairs);
-              }}
-            />
-
             <div className="flex min-h-0 flex-col text-zinc-100">
               <div className="shrink-0 pb-3">
-                <h2 className="font-display text-xl font-semibold text-zinc-50">入力</h2>
+                <h2 className="font-display font-semibold text-zinc-50">牌入力</h2>
               </div>
 
               <InputModeArea
                 currentInputMode={inputMode}
                 threePlayer={threePlayer}
                 hasTileSlot={tileSlot > 0}
+                hasDoraIndicatorSlot={hasDoraIndicatorSlot}
                 hasMeldSlot={meldSlot > 0}
                 canClear={canClear}
                 onInputModeChange={changeInputMode}
@@ -128,11 +249,20 @@ function App() {
               <InputTileArea
                 currentInputMode={inputMode}
                 pendingChi={pendingChi}
-                enableRedDora={enableRedDora}
+                useRed={useRed}
                 canAddTile={(tile) => tile !== null && tileSlot > 0 && tileCounts.canAddTile(tile)}
+                canAddDoraIndicator={(tile) => hasDoraIndicatorSlot && tileCounts.canAddTile(tile)}
                 canAddMeld={(meld) => meldSlot > 0 && tileCounts.canAddMeld(meld)}
                 onPendingChiChange={setPendingChi}
                 onAddTile={(tile) => dispatch({ type: "addTile", payload: tile })}
+                onAddDoraIndicator={(tile) => {
+                  if (!hasDoraIndicatorSlot || !tileCounts.canAddTile(tile)) {
+                    return;
+                  }
+
+                  setDoraIndicators((prev) => [...prev, { ...tile }]);
+                  doraIndicators.length + 1 >= MAX_DORA_INDICATOR_COUNT && setInputMode("hand");
+                }}
                 onAddMeld={(meld) => {
                   dispatch({ type: "addMeld", payload: meld });
                   setPendingChi(null);
@@ -140,6 +270,8 @@ function App() {
                 }}
               />
             </div>
+
+            <WinProbButton disabled={!canCalcExpectation} onClick={calcExpectation} />
           </div>
 
           {pairiMode ? (
@@ -153,6 +285,18 @@ function App() {
           ) : null}
         </section>
       </main>
+
+      <Drawer open={isDrawerOpen} title="履歴" onClose={() => setIsDrawerOpen(false)}>
+        <div className="flex flex-col-reverse gap-5">
+          {history.length > 0 ? (
+            history.map((entry, index) => (
+              <WinProbResultEntry key={index} entry={entry} isLatest={index === history.length - 1} />
+            ))
+          ) : (
+            <p className="py-8 text-center text-sm text-zinc-400">履歴はありません</p>
+          )}
+        </div>
+      </Drawer>
     </>
   );
 }

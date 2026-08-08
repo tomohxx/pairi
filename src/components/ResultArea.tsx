@@ -87,7 +87,7 @@ export function ResultArea({ pairiArray, tileLimits, numMelds, fourTileSevenPair
   } catch {
     return (
       <section className="flex self-start text-zinc-100">
-        <div className="flex flex-1 items-center justify-center rounded-md border border-zinc-700 bg-zinc-950 px-6 text-center text-sm text-zinc-300">
+        <div className="flex flex-1 items-center justify-center rounded border border-zinc-700 bg-zinc-950 px-6 text-center text-sm text-zinc-300">
           エラーが発生しました
         </div>
       </section>
@@ -97,7 +97,7 @@ export function ResultArea({ pairiArray, tileLimits, numMelds, fourTileSevenPair
   return (
     <section className="flex w-full min-w-0 flex-col self-start text-zinc-100">
       <div className="pb-3">
-        <h2 className="font-display text-xl font-semibold text-zinc-50">{formatShanten(shanten)}</h2>
+        <h2 className="font-display font-semibold text-zinc-50">{formatShanten(shanten)}</h2>
       </div>
 
       <div className="p-2">{rows}</div>
