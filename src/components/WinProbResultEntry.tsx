@@ -198,7 +198,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
           <div className="flex items-center gap-1">
             <Listbox value={turn} onChange={setTurn}>
               <div className="relative">
-                <ListboxButton className="relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold text-zinc-300 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+                <ListboxButton className="relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-50 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
                   <span>{turn}巡目</span>
                   <HiChevronUpDown aria-hidden="true" className="absolute right-1 size-4 text-zinc-400" />
                 </ListboxButton>
@@ -207,7 +207,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
                     <ListboxOption
                       key={value}
                       value={value}
-                      className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 focus:bg-teal-400 focus:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950"
+                      className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-50 focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
                     >
                       {value}巡目
                     </ListboxOption>

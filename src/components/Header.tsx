@@ -11,7 +11,7 @@ export function Header({ title, onHistoryOpen }: HeaderProps) {
         <button
           type="button"
           onClick={onHistoryOpen}
-          className="rounded px-3 py-1.5 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-800 hover:text-zinc-50 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
+          className="rounded border border-zinc-700 px-3 py-1.5 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-800 hover:text-zinc-50 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
         >
           履歴
         </button>

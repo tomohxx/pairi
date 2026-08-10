@@ -21,4 +21,8 @@
     margin: 0;
     min-height: 100svh;
   }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
