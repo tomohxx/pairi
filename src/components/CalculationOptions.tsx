@@ -105,11 +105,11 @@ function WindButtonGroup({ label, value, onChange }: WindButtonGroupProps) {
   return (
     <div className="grid grid-cols-2 gap-1 px-1 py-1 sm:px-3">
       <span>{label}</span>
-      <div className="grid w-full grid-cols-4 overflow-hidden rounded border border-zinc-700">
+      <div className="border-border-primary grid w-full grid-cols-4 overflow-hidden rounded border">
         {winds.map((wind) => (
           <label
             key={wind.value}
-            className="text-text-primary hover:text-text-primary hover:bg-bg-hover relative flex h-6 cursor-pointer items-center justify-center border-r border-zinc-700 text-sm font-semibold transition-colors last:border-r-0 has-checked:bg-teal-400 has-checked:text-zinc-950 has-checked:hover:bg-teal-400 has-checked:hover:text-zinc-950 has-focus-visible:z-10 has-focus-visible:ring-2 has-focus-visible:ring-teal-400"
+            className="text-text-primary hover:text-text-primary hover:bg-bg-hover border-border-primary relative flex h-6 cursor-pointer items-center justify-center border-r text-sm font-semibold transition-colors last:border-r-0 has-checked:bg-teal-400 has-checked:text-zinc-950 has-checked:hover:bg-teal-400 has-checked:hover:text-zinc-950 has-focus-visible:z-10 has-focus-visible:ring-2 has-focus-visible:ring-teal-400"
           >
             <input
               type="radio"
@@ -138,11 +138,11 @@ function TurnListbox({ value, onChange }: TurnListboxProps) {
       <span>最終巡目</span>
       <Listbox value={value} onChange={onChange}>
         <div className="relative">
-          <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover relative flex h-7 w-full items-center justify-center rounded border border-zinc-700 px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+          <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover border-border-primary relative flex h-7 w-full items-center justify-center rounded border px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
             <span>{value}巡目</span>
             <HiChevronUpDown aria-hidden="true" className="text-text-muted absolute right-2 size-4" />
           </ListboxButton>
-          <ListboxOptions className="bg-bg-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 py-1 shadow-xl focus:outline-none">
+          <ListboxOptions className="bg-bg-primary border-border-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border py-1 shadow-xl focus:outline-none">
             {turns.map((turn) => (
               <ListboxOption
                 key={turn}
@@ -170,11 +170,11 @@ function NukidoraListbox({ value, onChange }: NukidoraListboxProps) {
       <span>抜きドラ</span>
       <Listbox value={value} onChange={onChange}>
         <div className="relative">
-          <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover relative flex h-7 w-full items-center justify-center rounded border border-zinc-700 px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+          <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover border-border-primary relative flex h-7 w-full items-center justify-center rounded border px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
             <span>{value}</span>
             <HiChevronUpDown aria-hidden="true" className="text-text-muted absolute right-2 size-4" />
           </ListboxButton>
-          <ListboxOptions className="bg-bg-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 py-1 shadow-xl focus:outline-none">
+          <ListboxOptions className="bg-bg-primary border-border-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border py-1 shadow-xl focus:outline-none">
             {nukidoraCounts.map((count) => (
               <ListboxOption
                 key={count}

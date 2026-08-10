@@ -7,6 +7,9 @@
   --color-bg-hover: var(--color-zinc-800);
   --color-bg-selected: var(--color-zinc-100);
   --color-bg-disabled: var(--color-zinc-700);
+  --color-border-primary: var(--color-zinc-700);
+  --color-border-muted: var(--color-zinc-800);
+  --color-border-selected: var(--color-zinc-100);
   --color-text-primary: var(--color-zinc-50);
   --color-text-muted: var(--color-zinc-400);
   --color-text-disabled: var(--color-zinc-600);

@@ -198,11 +198,11 @@ function ResultTable({ entry, open }: ResultTableProps) {
           <div className="flex items-center gap-1">
             <Listbox value={turn} onChange={setTurn}>
               <div className="relative">
-                <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+                <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover border-border-primary relative flex h-7 w-24 items-center justify-center rounded border px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
                   <span>{turn}巡目</span>
                   <HiChevronUpDown aria-hidden="true" className="text-text-muted absolute right-1 size-4" />
                 </ListboxButton>
-                <ListboxOptions className="bg-bg-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 py-1 shadow-xl focus:outline-none">
+                <ListboxOptions className="bg-bg-primary border-border-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border py-1 shadow-xl focus:outline-none">
                   {Array.from({ length: entry.tMax + 1 }, (_, value) => (
                     <ListboxOption
                       key={value}
@@ -222,7 +222,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
 
       <div className="overflow-x-auto">
         <table className="w-full min-w-130 text-sm">
-          <thead className="text-text-muted border-b border-zinc-700 text-left text-xs font-medium">
+          <thead className="text-text-muted border-border-primary border-b text-left text-xs font-medium">
             <tr>
               <SortableHeader column="tile" label="打牌候補" sortState={sortState} onSort={handleSort} />
               <SortableHeader
@@ -250,7 +250,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
           </thead>
           <tbody>
             {sortedResults.map((result) => (
-              <tr key={result.tile} className="text-text-primary border-b border-zinc-800">
+              <tr key={result.tile} className="text-text-primary border-border-muted border-b">
                 <td className="px-2 py-2">
                   <TileImage tile={fromApiTile(result.tile)} size="compact" />
                 </td>
@@ -273,7 +273,7 @@ type WinProbResultEntryProps = {
 
 export function WinProbResultEntry({ entry, isLatest }: WinProbResultEntryProps) {
   return (
-    <article className="space-y-4 border-b border-zinc-800 pb-5 last:border-b-0 last:pb-0">
+    <article className="border-border-muted space-y-4 border-b pb-5 last:border-b-0 last:pb-0">
       <Snapshot entry={entry} />
 
       {entry.status === "pending" ? (

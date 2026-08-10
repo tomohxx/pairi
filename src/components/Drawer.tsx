@@ -33,8 +33,8 @@ export function Drawer({ open, title, onClose, children }: DrawerProps) {
             leaveFrom="translate-y-0 sm:translate-x-0"
             leaveTo="translate-y-full sm:translate-x-full sm:translate-y-0"
           >
-            <DialogPanel className="flex max-h-[90svh] w-full flex-col rounded-t-lg border border-zinc-700 bg-zinc-950 shadow-2xl sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-y-0 sm:border-r-0 lg:max-w-2xl">
-              <div className="flex h-14 shrink-0 items-center justify-between border-b border-zinc-800 px-4">
+            <DialogPanel className="border-border-primary flex max-h-[90svh] w-full flex-col rounded-t-lg border bg-zinc-950 shadow-2xl sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-y-0 sm:border-r-0 lg:max-w-2xl">
+              <div className="border-border-muted flex h-14 shrink-0 items-center justify-between border-b px-4">
                 <DialogTitle className="font-display text-text-primary font-semibold">{title}</DialogTitle>
                 <button
                   type="button"

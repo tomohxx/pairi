@@ -21,7 +21,7 @@ export function DoraIndicatorsArea({ doraIndicators, onRemoveDoraIndicator }: Do
             ))}
           </div>
         ) : (
-          <div className="text-text-muted bg-bg-primary flex min-h-8 items-center justify-center rounded border border-dashed border-zinc-700 px-6 text-center text-sm leading-7 sm:min-h-12">
+          <div className="text-text-muted bg-bg-primary border-border-primary flex min-h-8 items-center justify-center rounded border border-dashed px-6 text-center text-sm leading-7 sm:min-h-12">
             ドラ表示牌モードから牌を選ぶと、ここに表示されます
           </div>
         )}

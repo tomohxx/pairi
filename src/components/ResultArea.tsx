@@ -87,7 +87,7 @@ export function ResultArea({ pairiArray, tileLimits, numMelds, fourTileSevenPair
   } catch {
     return (
       <section className="text-text-primary flex self-start">
-        <div className="text-text-primary flex flex-1 items-center justify-center rounded border border-zinc-700 bg-zinc-950 px-6 text-center text-sm">
+        <div className="text-text-primary border-border-primary flex flex-1 items-center justify-center rounded border bg-zinc-950 px-6 text-center text-sm">
           エラーが発生しました
         </div>
       </section>
