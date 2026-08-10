@@ -3,7 +3,10 @@
 @theme {
   --font-sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
   --font-display: "BIZ UDPGothic", "Noto Sans JP", sans-serif;
-  --color-background: var(--color-zinc-900);
+  --color-bg-primary: var(--color-zinc-900);
+  --color-bg-hover: var(--color-zinc-800);
+  --color-bg-selected: var(--color-zinc-100);
+  --color-bg-disabled: var(--color-zinc-700);
   --color-text-primary: var(--color-zinc-50);
   --color-text-muted: var(--color-zinc-400);
   --color-text-disabled: var(--color-zinc-600);
@@ -12,7 +15,7 @@
 @layer base {
   html {
     font-family: var(--font-sans);
-    background: var(--color-background);
+    background: var(--color-bg-primary);
     color: var(--color-text-primary);
     font-synthesis: none;
     text-rendering: optimizeLegibility;

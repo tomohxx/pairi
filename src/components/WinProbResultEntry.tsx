@@ -198,16 +198,16 @@ function ResultTable({ entry, open }: ResultTableProps) {
           <div className="flex items-center gap-1">
             <Listbox value={turn} onChange={setTurn}>
               <div className="relative">
-                <ListboxButton className="text-text-primary hover:text-text-primary relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold transition-colors hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+                <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
                   <span>{turn}巡目</span>
                   <HiChevronUpDown aria-hidden="true" className="text-text-muted absolute right-1 size-4" />
                 </ListboxButton>
-                <ListboxOptions className="absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900 py-1 shadow-xl focus:outline-none">
+                <ListboxOptions className="bg-bg-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 py-1 shadow-xl focus:outline-none">
                   {Array.from({ length: entry.tMax + 1 }, (_, value) => (
                     <ListboxOption
                       key={value}
                       value={value}
-                      className="text-text-primary hover:text-text-primary cursor-pointer px-2 py-1 text-center text-sm font-semibold transition-colors hover:bg-zinc-800 focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
+                      className="text-text-primary hover:text-text-primary hover:bg-bg-hover cursor-pointer px-2 py-1 text-center text-sm font-semibold transition-colors focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
                     >
                       {value}巡目
                     </ListboxOption>

@@ -87,9 +87,9 @@ export function ToggleButton({ label, enabled, onChange }: ToggleButtonProps) {
       <Switch
         checked={enabled}
         onChange={onChange}
-        className="group relative h-5 w-9 shrink-0 rounded-full bg-zinc-700 transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none data-checked:bg-teal-400"
+        className="group bg-bg-disabled relative h-5 w-9 shrink-0 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none data-checked:bg-teal-400"
       >
-        <span className="absolute top-0.5 left-0.5 size-4 rounded-full bg-zinc-100 transition-transform group-data-checked:translate-x-4" />
+        <span className="bg-bg-selected absolute top-0.5 left-0.5 size-4 rounded-full transition-transform group-data-checked:translate-x-4" />
       </Switch>
     </div>
   );
@@ -109,7 +109,7 @@ function WindButtonGroup({ label, value, onChange }: WindButtonGroupProps) {
         {winds.map((wind) => (
           <label
             key={wind.value}
-            className="text-text-primary hover:text-text-primary relative flex h-6 cursor-pointer items-center justify-center border-r border-zinc-700 text-sm font-semibold transition-colors last:border-r-0 hover:bg-zinc-800 has-checked:bg-teal-400 has-checked:text-zinc-950 has-checked:hover:bg-teal-400 has-checked:hover:text-zinc-950 has-focus-visible:z-10 has-focus-visible:ring-2 has-focus-visible:ring-teal-400"
+            className="text-text-primary hover:text-text-primary hover:bg-bg-hover relative flex h-6 cursor-pointer items-center justify-center border-r border-zinc-700 text-sm font-semibold transition-colors last:border-r-0 has-checked:bg-teal-400 has-checked:text-zinc-950 has-checked:hover:bg-teal-400 has-checked:hover:text-zinc-950 has-focus-visible:z-10 has-focus-visible:ring-2 has-focus-visible:ring-teal-400"
           >
             <input
               type="radio"
@@ -138,16 +138,16 @@ function TurnListbox({ value, onChange }: TurnListboxProps) {
       <span>最終巡目</span>
       <Listbox value={value} onChange={onChange}>
         <div className="relative">
-          <ListboxButton className="text-text-primary hover:text-text-primary relative flex h-7 w-full items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold transition-colors hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+          <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover relative flex h-7 w-full items-center justify-center rounded border border-zinc-700 px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
             <span>{value}巡目</span>
             <HiChevronUpDown aria-hidden="true" className="text-text-muted absolute right-2 size-4" />
           </ListboxButton>
-          <ListboxOptions className="absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900 py-1 shadow-xl focus:outline-none">
+          <ListboxOptions className="bg-bg-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 py-1 shadow-xl focus:outline-none">
             {turns.map((turn) => (
               <ListboxOption
                 key={turn}
                 value={turn}
-                className="text-text-primary hover:text-text-primary cursor-pointer px-2 py-1 text-center text-sm font-semibold transition-colors hover:bg-zinc-800 focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
+                className="text-text-primary hover:text-text-primary hover:bg-bg-hover cursor-pointer px-2 py-1 text-center text-sm font-semibold transition-colors focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
               >
                 {turn}巡目
               </ListboxOption>
@@ -170,16 +170,16 @@ function NukidoraListbox({ value, onChange }: NukidoraListboxProps) {
       <span>抜きドラ</span>
       <Listbox value={value} onChange={onChange}>
         <div className="relative">
-          <ListboxButton className="text-text-primary hover:text-text-primary relative flex h-7 w-full items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold transition-colors hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+          <ListboxButton className="text-text-primary hover:text-text-primary bg-bg-primary hover:bg-bg-hover relative flex h-7 w-full items-center justify-center rounded border border-zinc-700 px-2 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
             <span>{value}</span>
             <HiChevronUpDown aria-hidden="true" className="text-text-muted absolute right-2 size-4" />
           </ListboxButton>
-          <ListboxOptions className="absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900 py-1 shadow-xl focus:outline-none">
+          <ListboxOptions className="bg-bg-primary absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 py-1 shadow-xl focus:outline-none">
             {nukidoraCounts.map((count) => (
               <ListboxOption
                 key={count}
                 value={count}
-                className="text-text-primary hover:text-text-primary cursor-pointer px-2 py-1 text-center text-sm font-semibold transition-colors hover:bg-zinc-800 focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
+                className="text-text-primary hover:text-text-primary hover:bg-bg-hover cursor-pointer px-2 py-1 text-center text-sm font-semibold transition-colors focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
               >
                 {count}
               </ListboxOption>

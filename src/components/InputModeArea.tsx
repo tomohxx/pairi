@@ -53,8 +53,8 @@ export function InputModeArea({
               disabled
                 ? "text-text-disabled cursor-not-allowed border-zinc-800"
                 : selected
-                  ? "border-zinc-100 bg-zinc-100 text-zinc-950"
-                  : "text-text-primary hover:text-text-primary border-zinc-700 hover:bg-zinc-800"
+                  ? "bg-bg-selected border-zinc-100 text-zinc-950"
+                  : "text-text-primary hover:text-text-primary hover:bg-bg-hover border-zinc-700"
             }`}
           >
             {mode.label}
@@ -68,7 +68,7 @@ export function InputModeArea({
         onClick={onClear}
         className={`rounded border px-1 py-1 text-sm font-semibold transition-colors sm:px-3 ${
           canClear
-            ? "text-text-primary hover:text-text-primary border-zinc-700 hover:bg-zinc-800"
+            ? "text-text-primary hover:text-text-primary hover:bg-bg-hover border-zinc-700"
             : "text-text-disabled cursor-not-allowed border-zinc-800"
         } `}
       >

@@ -46,7 +46,7 @@ export function DisplayArea({ handState: { tiles, melds }, onRemoveTile, onRemov
             ))}
           </div>
         ) : (
-          <div className="text-text-muted flex min-h-[2rem] items-center justify-center rounded border border-dashed border-zinc-700 bg-zinc-900 px-6 text-center text-sm leading-7 sm:min-h-[3rem]">
+          <div className="text-text-muted bg-bg-primary flex min-h-[2rem] items-center justify-center rounded border border-dashed border-zinc-700 px-6 text-center text-sm leading-7 sm:min-h-[3rem]">
             手牌モードから牌を選ぶと、ここに理牌して表示されます
           </div>
         )}
