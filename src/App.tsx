@@ -65,7 +65,7 @@ function App() {
   const [useRed, setUseRed] = useState<boolean>(true);
   const [threePlayer, setThreePlayer] = useState<boolean>(false);
   const [fourTileSevenPairs, setFourTileSevenPairs] = useState<boolean>(false);
-  const [useExtra, setUseExtra] = useState<boolean>(false);
+  const [useExtra, setUseExtra] = useState<boolean>(true);
   const [riichi, setRiichi] = useState<boolean>(false);
   const [seatWind, setSeatWind] = useState<WindType>("east");
   const [roundWind, setRoundWind] = useState<WindType>("east");
