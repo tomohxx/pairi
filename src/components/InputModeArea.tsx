@@ -51,10 +51,10 @@ export function InputModeArea({
             onClick={() => onInputModeChange(mode.id)}
             className={`rounded border px-1 py-1 text-sm font-semibold transition-colors sm:px-3 ${
               disabled
-                ? "cursor-not-allowed border-zinc-800 text-zinc-600"
+                ? "text-text-disabled cursor-not-allowed border-zinc-800"
                 : selected
                   ? "border-zinc-100 bg-zinc-100 text-zinc-950"
-                  : "border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-50"
+                  : "text-text-primary hover:text-text-primary border-zinc-700 hover:bg-zinc-800"
             }`}
           >
             {mode.label}
@@ -68,8 +68,8 @@ export function InputModeArea({
         onClick={onClear}
         className={`rounded border px-1 py-1 text-sm font-semibold transition-colors sm:px-3 ${
           canClear
-            ? "border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-zinc-50"
-            : "cursor-not-allowed border-zinc-800 text-zinc-600"
+            ? "text-text-primary hover:text-text-primary border-zinc-700 hover:bg-zinc-800"
+            : "text-text-disabled cursor-not-allowed border-zinc-800"
         } `}
       >
         クリア

@@ -41,7 +41,7 @@ function PairiRow({ discardTileId, waitTileCount, waitTileIds }: PairiRowProps) 
         </div>
       )}
 
-      <div className="text-sm font-semibold whitespace-nowrap text-zinc-200">
+      <div className="text-text-primary text-sm font-semibold whitespace-nowrap">
         {waitTileIds.length}種{waitTileCount}枚
       </div>
 
@@ -86,8 +86,8 @@ export function ResultArea({ pairiArray, tileLimits, numMelds, fourTileSevenPair
     }
   } catch {
     return (
-      <section className="flex self-start text-zinc-100">
-        <div className="flex flex-1 items-center justify-center rounded border border-zinc-700 bg-zinc-950 px-6 text-center text-sm text-zinc-300">
+      <section className="text-text-primary flex self-start">
+        <div className="text-text-primary flex flex-1 items-center justify-center rounded border border-zinc-700 bg-zinc-950 px-6 text-center text-sm">
           エラーが発生しました
         </div>
       </section>
@@ -95,9 +95,9 @@ export function ResultArea({ pairiArray, tileLimits, numMelds, fourTileSevenPair
   }
 
   return (
-    <section className="flex w-full min-w-0 flex-col self-start text-zinc-100">
+    <section className="text-text-primary flex w-full min-w-0 flex-col self-start">
       <div className="pb-3">
-        <h2 className="font-display font-semibold text-zinc-50">{formatShanten(shanten)}</h2>
+        <h2 className="font-display text-text-primary font-semibold">{formatShanten(shanten)}</h2>
       </div>
 
       <div className="p-2">{rows}</div>

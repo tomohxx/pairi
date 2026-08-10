@@ -230,9 +230,9 @@ function App() {
               }}
             />
 
-            <div className="flex min-h-0 flex-col text-zinc-100">
+            <div className="text-text-primary flex min-h-0 flex-col">
               <div className="shrink-0 pb-3">
-                <h2 className="font-display font-semibold text-zinc-50">牌入力</h2>
+                <h2 className="font-display text-text-primary font-semibold">牌入力</h2>
               </div>
 
               <InputModeArea
@@ -293,7 +293,7 @@ function App() {
               <WinProbResultEntry key={index} entry={entry} isLatest={index === history.length - 1} />
             ))
           ) : (
-            <p className="py-8 text-center text-sm text-zinc-400">履歴はありません</p>
+            <p className="text-text-muted py-8 text-center text-sm">履歴はありません</p>
           )}
         </div>
       </Drawer>

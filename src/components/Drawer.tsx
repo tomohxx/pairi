@@ -35,11 +35,11 @@ export function Drawer({ open, title, onClose, children }: DrawerProps) {
           >
             <DialogPanel className="flex max-h-[90svh] w-full flex-col rounded-t-lg border border-zinc-700 bg-zinc-950 shadow-2xl sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-y-0 sm:border-r-0 lg:max-w-2xl">
               <div className="flex h-14 shrink-0 items-center justify-between border-b border-zinc-800 px-4">
-                <DialogTitle className="font-display font-semibold text-zinc-50">{title}</DialogTitle>
+                <DialogTitle className="font-display text-text-primary font-semibold">{title}</DialogTitle>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="grid size-9 place-items-center rounded text-zinc-300 transition hover:bg-zinc-800 hover:text-zinc-50 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
+                  className="text-text-primary hover:text-text-primary grid size-9 place-items-center rounded transition hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
                 >
                   <IoClose />
                 </button>

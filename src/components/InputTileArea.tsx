@@ -113,7 +113,7 @@ export function InputTileArea({
   };
 
   return (
-    <div className="flex min-h-0 flex-col text-zinc-100">
+    <div className="text-text-primary flex min-h-0 flex-col">
       <div className="mt-3 min-h-0 flex-1 rounded">
         <div className="space-y-0.5">
           {inputTileRows.map((row, index) => (

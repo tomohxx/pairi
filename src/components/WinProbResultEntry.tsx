@@ -29,13 +29,13 @@ function Snapshot({ entry }: SnapshotProps) {
   return (
     <div className="space-y-3">
       <div>
-        <p className="mb-1 text-xs font-semibold text-zinc-400">設定</p>
-        <p className="text-sm text-zinc-300">{settings}</p>
+        <p className="text-text-muted mb-1 text-xs font-semibold">設定</p>
+        <p className="text-text-primary text-sm">{settings}</p>
       </div>
 
       {entry.doraIndicators.length > 0 ? (
         <div>
-          <p className="mb-1 text-xs font-semibold text-zinc-400">ドラ表示牌</p>
+          <p className="text-text-muted mb-1 text-xs font-semibold">ドラ表示牌</p>
           <div className="flex flex-nowrap gap-px">
             {entry.doraIndicators.map((tile, index) => (
               <TileImage key={index} tile={tile} size="compact" />
@@ -45,7 +45,7 @@ function Snapshot({ entry }: SnapshotProps) {
       ) : null}
 
       <div>
-        <p className="mb-1 text-xs font-semibold text-zinc-400">手牌</p>
+        <p className="text-text-muted mb-1 text-xs font-semibold">手牌</p>
         <div className="flex flex-wrap items-end gap-2">
           <div className="flex flex-nowrap gap-px">
             {entry.handState.tiles.map((tile, index) => (
@@ -134,8 +134,8 @@ function SortableHeader({ column, label, numeric = false, sortState, onSort }: S
       <button
         type="button"
         onClick={() => onSort(column)}
-        className={`inline-flex items-center gap-1 rounded-sm hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none ${
-          direction ? "text-teal-400" : "text-zinc-400"
+        className={`hover:text-text-primary inline-flex items-center gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none ${
+          direction ? "text-teal-400" : "text-text-muted"
         }`}
       >
         <span>{label}</span>
@@ -173,41 +173,41 @@ function ResultTable({ entry, open }: ResultTableProps) {
 
   return (
     <details open={open} className="group">
-      <summary className="cursor-pointer text-sm font-semibold text-zinc-200 marker:text-teal-400 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+      <summary className="text-text-primary cursor-pointer text-sm font-semibold marker:text-teal-400 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
         計算結果
       </summary>
 
       <div className="mt-3 space-y-3">
-        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+        <div className="text-text-primary flex items-center justify-between gap-3 text-sm">
           <span>向聴数</span>
           <span>{formatShanten(entry.result.shanten)}</span>
         </div>
 
-        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+        <div className="text-text-primary flex items-center justify-between gap-3 text-sm">
           <span>探索手牌数</span>
           <span>{entry.result.searched}</span>
         </div>
 
-        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+        <div className="text-text-primary flex items-center justify-between gap-3 text-sm">
           <span>処理時間</span>
           <span>{formatElapsed(entry.result.elapsed)} ms</span>
         </div>
 
-        <div className="flex items-center justify-between gap-3 text-sm text-zinc-300">
+        <div className="text-text-primary flex items-center justify-between gap-3 text-sm">
           <span>現在巡目/最終巡目</span>
           <div className="flex items-center gap-1">
             <Listbox value={turn} onChange={setTurn}>
               <div className="relative">
-                <ListboxButton className="relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-50 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
+                <ListboxButton className="text-text-primary hover:text-text-primary relative flex h-7 w-24 items-center justify-center rounded border border-zinc-700 bg-zinc-900 px-2 text-sm font-semibold transition-colors hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none">
                   <span>{turn}巡目</span>
-                  <HiChevronUpDown aria-hidden="true" className="absolute right-1 size-4 text-zinc-400" />
+                  <HiChevronUpDown aria-hidden="true" className="text-text-muted absolute right-1 size-4" />
                 </ListboxButton>
                 <ListboxOptions className="absolute right-0 z-20 mt-1 max-h-52 w-full overflow-y-auto rounded border border-zinc-700 bg-zinc-900 py-1 shadow-xl focus:outline-none">
                   {Array.from({ length: entry.tMax + 1 }, (_, value) => (
                     <ListboxOption
                       key={value}
                       value={value}
-                      className="cursor-pointer px-2 py-1 text-center text-sm font-semibold text-zinc-300 transition-colors hover:bg-zinc-800 hover:text-zinc-50 focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
+                      className="text-text-primary hover:text-text-primary cursor-pointer px-2 py-1 text-center text-sm font-semibold transition-colors hover:bg-zinc-800 focus:bg-teal-400 focus:text-zinc-950 focus:hover:bg-teal-400 focus:hover:text-zinc-950 data-selected:bg-teal-400 data-selected:text-zinc-950 data-selected:hover:bg-teal-400 data-selected:hover:text-zinc-950"
                     >
                       {value}巡目
                     </ListboxOption>
@@ -222,7 +222,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
 
       <div className="overflow-x-auto">
         <table className="w-full min-w-130 text-sm">
-          <thead className="border-b border-zinc-700 text-left text-xs font-medium text-zinc-400">
+          <thead className="text-text-muted border-b border-zinc-700 text-left text-xs font-medium">
             <tr>
               <SortableHeader column="tile" label="打牌候補" sortState={sortState} onSort={handleSort} />
               <SortableHeader
@@ -250,7 +250,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
           </thead>
           <tbody>
             {sortedResults.map((result) => (
-              <tr key={result.tile} className="border-b border-zinc-800 text-zinc-100">
+              <tr key={result.tile} className="text-text-primary border-b border-zinc-800">
                 <td className="px-2 py-2">
                   <TileImage tile={fromApiTile(result.tile)} size="compact" />
                 </td>
@@ -277,7 +277,7 @@ export function WinProbResultEntry({ entry, isLatest }: WinProbResultEntryProps)
       <Snapshot entry={entry} />
 
       {entry.status === "pending" ? (
-        <div className="flex min-h-36 flex-col items-center justify-center gap-3 text-sm text-zinc-300">
+        <div className="text-text-primary flex min-h-36 flex-col items-center justify-center gap-3 text-sm">
           <ClipLoader color="#2dd4bf" size={28} />
           <p>計算中...</p>
         </div>

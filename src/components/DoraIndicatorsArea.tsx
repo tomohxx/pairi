@@ -10,7 +10,7 @@ export function DoraIndicatorsArea({ doraIndicators, onRemoveDoraIndicator }: Do
   return (
     <div>
       <div className="flex items-center justify-between gap-4 pb-3">
-        <h2 className="font-display font-semibold text-zinc-50">ドラ表示牌</h2>
+        <h2 className="font-display text-text-primary font-semibold">ドラ表示牌</h2>
       </div>
 
       <div className="min-h-8 sm:min-h-12">
@@ -21,7 +21,7 @@ export function DoraIndicatorsArea({ doraIndicators, onRemoveDoraIndicator }: Do
             ))}
           </div>
         ) : (
-          <div className="flex min-h-8 items-center justify-center rounded border border-dashed border-zinc-700 bg-zinc-900 px-6 text-center text-sm leading-7 text-zinc-400 sm:min-h-12">
+          <div className="text-text-muted flex min-h-8 items-center justify-center rounded border border-dashed border-zinc-700 bg-zinc-900 px-6 text-center text-sm leading-7 sm:min-h-12">
             ドラ表示牌モードから牌を選ぶと、ここに表示されます
           </div>
         )}
