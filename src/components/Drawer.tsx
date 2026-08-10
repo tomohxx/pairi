@@ -39,7 +39,7 @@ export function Drawer({ open, title, onClose, children }: DrawerProps) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="text-text-primary hover:text-text-primary hover:bg-bg-hover grid size-9 place-items-center rounded transition focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
+                  className="text-text-primary hover:text-text-primary hover:bg-bg-hover border-border-primary grid size-9 place-items-center rounded border transition focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
                 >
                   <IoClose />
                 </button>
