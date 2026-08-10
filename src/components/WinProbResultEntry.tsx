@@ -278,7 +278,7 @@ export function WinProbResultEntry({ entry, isLatest }: WinProbResultEntryProps)
 
       {entry.status === "pending" ? (
         <div className="text-text-primary flex min-h-36 flex-col items-center justify-center gap-3 text-sm">
-          <ClipLoader color="#2dd4bf" size={28} />
+          <ClipLoader color="var(--color-teal-400)" size={28} />
           <p>計算中...</p>
         </div>
       ) : null}
