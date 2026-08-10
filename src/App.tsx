@@ -141,10 +141,8 @@ function App() {
 
     void (async () => {
       const controller = new AbortController();
-      let timedOut = false;
       const timeoutId = window.setTimeout(
         () => {
-          timedOut = true;
           controller.abort();
         },
         Number(import.meta.env.VITE_REQUEST_TIMEOUT),
@@ -161,11 +159,7 @@ function App() {
         const completedAt = new Date().toISOString();
 
         setHistory((prev) =>
-          prev.map((entry) =>
-            entry.id === id
-              ? { ...entry, status: "error", completedAt, errorType: timedOut ? "timeout" : "request" }
-              : entry,
-          ),
+          prev.map((entry) => (entry.id === id ? { ...entry, status: "error", completedAt } : entry)),
         );
       } finally {
         window.clearTimeout(timeoutId);

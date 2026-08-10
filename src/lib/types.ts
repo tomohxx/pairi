@@ -96,6 +96,5 @@ export type HistoryEntry = {
   | {
       status: "error";
       completedAt: string;
-      errorType: "timeout" | "request";
     }
 );

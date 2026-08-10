@@ -283,9 +283,7 @@ export function WinProbResultEntry({ entry, isLatest }: WinProbResultEntryProps)
         </div>
       ) : null}
 
-      {entry.status === "error" ? (
-        <p className="text-sm text-rose-300">{entry.errorType === "timeout" ? "タイムアウト" : "エラー"}</p>
-      ) : null}
+      {entry.status === "error" ? <p className="text-sm text-rose-300">エラーが発生しました</p> : null}
 
       {entry.status === "success" ? <ResultTable entry={entry} open={isLatest} /> : null}
     </article>
