@@ -24,16 +24,12 @@ export const createChiMeld = (tile: Tile, useRed = false): Meld => ({
   tiles: [tile, getTileVariant(getNextTile(tile, 1), useRed), getTileVariant(getNextTile(tile, 2), useRed)],
 });
 
-export const createAnkanMeld = (tile: Tile, enableRedDora: boolean): Meld => ({
+export const createAnkanMeld = (tile: Tile, useRed: boolean): Meld => ({
   type: "ankan",
-  tiles: [...Array(4).keys()].map((index) =>
-    index === 1 ? getTileVariant(tile, enableRedDora) : getTileVariant(tile),
-  ),
+  tiles: [...Array(4).keys()].map((index) => (index === 1 ? getTileVariant(tile, useRed) : getTileVariant(tile))),
 });
 
-export const createMinkanMeld = (tile: Tile, enableRedDora: boolean): Meld => ({
+export const createMinkanMeld = (tile: Tile, useRed: boolean): Meld => ({
   type: "minkan",
-  tiles: [...Array(4).keys()].map((index) =>
-    index === 1 ? getTileVariant(tile, enableRedDora) : getTileVariant(tile),
-  ),
+  tiles: [...Array(4).keys()].map((index) => (index === 1 ? getTileVariant(tile, useRed) : getTileVariant(tile))),
 });
