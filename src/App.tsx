@@ -75,7 +75,8 @@ function App() {
   const [nextHistoryEntryId, setNextHistoryEntryId] = useState<number>(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
-  const tileCounts = new TileCounts(handState, doraIndicators, useRed, threePlayer);
+  const tileCounts = new TileCounts(handState, doraIndicators, useRed, threePlayer, numNukidora);
+  const maxNumNukidora = 4 - tileCounts.getNumNorthTiles();
   const tileSlot = Math.max(MAX_TILE_COUNT - handState.melds.length * 3 - handState.tiles.length, 0);
   const meldSlot = Math.max(MAX_MELD_COUNT - Math.floor(handState.tiles.length / 3) - handState.melds.length, 0);
   const hasDoraIndicatorSlot = doraIndicators.length < MAX_DORA_INDICATOR_COUNT;
@@ -183,6 +184,7 @@ function App() {
               roundWind={roundWind}
               tMax={tMax}
               numNukidora={numNukidora}
+              maxNumNukidora={maxNumNukidora}
               onRedDoraChange={() => {
                 setUseRed(!useRed);
                 clearHandState();

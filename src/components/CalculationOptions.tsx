@@ -10,7 +10,6 @@ const winds: { label: string; value: WindType }[] = [
 ];
 
 const turns = Array.from({ length: 19 }, (_, value) => value);
-const nukidoraCounts = Array.from({ length: 5 }, (_, value) => value);
 
 type CalculationOptionsProps = {
   useRed: boolean;
@@ -22,6 +21,7 @@ type CalculationOptionsProps = {
   roundWind: WindType;
   tMax: number;
   numNukidora: number;
+  maxNumNukidora: number;
   onRedDoraChange: (enabled: boolean) => void;
   onThreePlayerChange: (enabled: boolean) => void;
   onFourTileSevenPairsChange: (enabled: boolean) => void;
@@ -43,6 +43,7 @@ export function CalculationOptions({
   roundWind,
   tMax,
   numNukidora,
+  maxNumNukidora,
   onRedDoraChange,
   onThreePlayerChange,
   onFourTileSevenPairsChange,
@@ -69,7 +70,9 @@ export function CalculationOptions({
       <WindButtonGroup label="自風" value={seatWind} onChange={onSeatWindChange} />
       <WindButtonGroup label="場風" value={roundWind} onChange={onRoundWindChange} />
       <TurnListbox value={tMax} onChange={onTMaxChange} />
-      {threePlayer ? <NukidoraListbox value={numNukidora} onChange={onNumNukidoraChange} /> : null}
+      {threePlayer ? (
+        <NukidoraListbox value={numNukidora} maxValue={maxNumNukidora} onChange={onNumNukidoraChange} />
+      ) : null}
     </div>
   );
 }
@@ -161,10 +164,13 @@ function TurnListbox({ value, onChange }: TurnListboxProps) {
 
 type NukidoraListboxProps = {
   value: number;
+  maxValue: number;
   onChange: (value: number) => void;
 };
 
-function NukidoraListbox({ value, onChange }: NukidoraListboxProps) {
+function NukidoraListbox({ value, maxValue, onChange }: NukidoraListboxProps) {
+  const nukidoraCounts = Array.from({ length: maxValue + 1 }, (_, count) => count);
+
   return (
     <div className="grid grid-cols-2 items-center gap-1 px-1 py-1 sm:px-3">
       <span>抜きドラ</span>

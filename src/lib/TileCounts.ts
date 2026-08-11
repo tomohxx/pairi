@@ -9,8 +9,15 @@ export class TileCounts {
   readonly #numMelds: number;
   readonly #useRed: boolean;
   readonly #threePlayer: boolean;
+  readonly #numNukidora: number;
 
-  constructor({ tiles, melds }: HandState, doraIndicators: Tile[], useRed: boolean, threePlayer: boolean) {
+  constructor(
+    { tiles, melds }: HandState,
+    doraIndicators: Tile[],
+    useRed: boolean,
+    threePlayer: boolean,
+    numNukidora: number,
+  ) {
     this.#normalCounts = {
       m: new Array(9).fill(0),
       p: new Array(9).fill(0),
@@ -31,10 +38,12 @@ export class TileCounts {
       s: new Array(9).fill(4),
       z: new Array(7).fill(4),
     };
+    threePlayer && (this.#tileLimitCounts.z[3] = 4 - numNukidora);
 
     this.#redCounts = { m: 0, p: 0, s: 0 };
     this.#useRed = useRed;
     this.#threePlayer = threePlayer;
+    this.#numNukidora = numNukidora;
     this.#numMelds = Math.floor(tiles.length / 3);
 
     tiles.forEach(({ suit, index, isRed }) => {
@@ -85,11 +94,19 @@ export class TileCounts {
     return this.#numMelds;
   }
 
+  getNumNorthTiles(): number {
+    return this.#normalCounts.z[3];
+  }
+
   #isUnavailableTile({ suit, index, isRed }: Tile): boolean {
     return (this.#threePlayer && suit === "m" && index >= 1 && index < 8) || (!this.#useRed && !!isRed);
   }
 
   #getMaxCount(tile: Tile): number {
+    if (this.#threePlayer && tile.suit === "z" && tile.index === 3) {
+      return 4 - this.#numNukidora;
+    }
+
     return this.#isUnavailableTile(tile) ? 0 : tile.isRed ? 1 : this.#useRed && isNormalFive(tile) ? 3 : 4;
   }
 
