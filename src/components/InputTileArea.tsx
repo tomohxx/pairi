@@ -26,22 +26,26 @@ const inputTileRows = [createSuitRow("m"), createSuitRow("p"), createSuitRow("s"
 type InputTileAreaProps = {
   currentInputMode: InputMode;
   pendingChi: Tile | null;
-  enableRedDora: boolean;
+  useRed: boolean;
   canAddTile: (tile: Tile | null) => boolean;
+  canAddDoraIndicator: (tile: Tile) => boolean;
   canAddMeld: (meld: Meld) => boolean;
   onPendingChiChange: (tile: Tile | null) => void;
   onAddTile: (tile: Tile) => void;
+  onAddDoraIndicator: (tile: Tile) => void;
   onAddMeld: (meld: Meld) => void;
 };
 
 export function InputTileArea({
   currentInputMode,
   pendingChi,
-  enableRedDora,
+  useRed,
   canAddTile,
+  canAddDoraIndicator,
   canAddMeld,
   onPendingChiChange,
   onAddTile,
+  onAddDoraIndicator,
   onAddMeld,
 }: InputTileAreaProps) {
   const createRedTileOption = (tile: Tile): boolean =>
@@ -54,6 +58,8 @@ export function InputTileArea({
     switch (currentInputMode) {
       case "hand":
         return canAddTile(tile);
+      case "doraIndicator":
+        return canAddDoraIndicator(tile);
       case "pon":
         return canAddMeld(createPonMeld(tile));
       case "chi": {
@@ -72,9 +78,9 @@ export function InputTileArea({
         return canAddMeld(createChiMeld(tile)) || canAddMeld(createChiMeld(tile, true));
       }
       case "ankan":
-        return canAddTile(tile) && canAddMeld(createAnkanMeld(tile, enableRedDora));
+        return canAddTile(tile) && canAddMeld(createAnkanMeld(tile, useRed));
       case "minkan":
-        return canAddTile(tile) && canAddMeld(createMinkanMeld(tile, enableRedDora));
+        return canAddTile(tile) && canAddMeld(createMinkanMeld(tile, useRed));
     }
   };
 
@@ -82,6 +88,8 @@ export function InputTileArea({
     switch (currentInputMode) {
       case "hand":
         return onAddTile(tile);
+      case "doraIndicator":
+        return onAddDoraIndicator(tile);
       case "pon":
         return onAddMeld(createPonMeld(tile));
       case "chi": {
@@ -98,15 +106,15 @@ export function InputTileArea({
         return onAddMeld(createChiMeld(tile, canAddTile(getSameSuitRedFive(tile))));
       }
       case "ankan":
-        return onAddMeld(createAnkanMeld(tile, enableRedDora));
+        return onAddMeld(createAnkanMeld(tile, useRed));
       case "minkan":
-        return onAddMeld(createMinkanMeld(tile, enableRedDora));
+        return onAddMeld(createMinkanMeld(tile, useRed));
     }
   };
 
   return (
-    <div className="flex min-h-0 flex-col text-zinc-100">
-      <div className="mt-3 min-h-0 flex-1 rounded-md">
+    <div className="text-text-primary flex min-h-0 flex-col">
+      <div className="mt-3 min-h-0 flex-1 rounded">
         <div className="space-y-0.5">
           {inputTileRows.map((row, index) => (
             <section key={index}>

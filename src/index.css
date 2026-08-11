@@ -3,15 +3,23 @@
 @theme {
   --font-sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
   --font-display: "BIZ UDPGothic", "Noto Sans JP", sans-serif;
-  --color-table-felt-dark: #18181b;
-  --color-paper-warm: #e4e4e7;
+  --color-bg-primary: var(--color-zinc-900);
+  --color-bg-hover: var(--color-zinc-800);
+  --color-bg-selected: var(--color-zinc-100);
+  --color-bg-disabled: var(--color-zinc-700);
+  --color-border-primary: var(--color-zinc-700);
+  --color-border-muted: var(--color-zinc-800);
+  --color-border-selected: var(--color-zinc-100);
+  --color-text-primary: var(--color-zinc-50);
+  --color-text-muted: var(--color-zinc-400);
+  --color-text-disabled: var(--color-zinc-600);
 }
 
 @layer base {
   html {
     font-family: var(--font-sans);
-    background: var(--color-table-felt-dark);
-    color: #f8f5eb;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -21,5 +29,9 @@
   body {
     margin: 0;
     min-height: 100svh;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
   }
 }

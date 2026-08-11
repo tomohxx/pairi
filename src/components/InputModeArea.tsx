@@ -2,6 +2,7 @@ import type { InputMode } from "../lib/types";
 
 const inputModes: Array<{ id: InputMode; label: string }> = [
   { id: "hand", label: "手牌" },
+  { id: "doraIndicator", label: "ドラ表示牌" },
   { id: "pon", label: "ポン" },
   { id: "chi", label: "チー" },
   { id: "ankan", label: "暗槓" },
@@ -12,6 +13,7 @@ type InputModeProps = {
   currentInputMode: InputMode;
   threePlayer: boolean;
   hasTileSlot: boolean;
+  hasDoraIndicatorSlot: boolean;
   hasMeldSlot: boolean;
   canClear: boolean;
   onInputModeChange: (inputMode: InputMode) => void;
@@ -22,6 +24,7 @@ export function InputModeArea({
   currentInputMode,
   threePlayer,
   hasTileSlot,
+  hasDoraIndicatorSlot,
   hasMeldSlot,
   canClear,
   onInputModeChange,
@@ -32,7 +35,13 @@ export function InputModeArea({
       {inputModes.map((mode) => {
         const selected = mode.id === currentInputMode;
         const disabled =
-          mode.id === "hand" ? !hasTileSlot : mode.id === "chi" ? threePlayer || !hasMeldSlot : !hasMeldSlot;
+          mode.id === "hand"
+            ? !hasTileSlot
+            : mode.id === "doraIndicator"
+              ? !hasDoraIndicatorSlot
+              : mode.id === "chi"
+                ? threePlayer || !hasMeldSlot
+                : !hasMeldSlot;
 
         return (
           <button
@@ -40,12 +49,12 @@ export function InputModeArea({
             type="button"
             disabled={disabled}
             onClick={() => onInputModeChange(mode.id)}
-            className={`rounded border px-1.5 py-1.5 text-sm font-semibold transition-colors sm:px-3 ${
+            className={`rounded border px-1 py-1 text-sm font-semibold transition-colors sm:px-3 ${
               disabled
-                ? "cursor-not-allowed border-zinc-800 bg-zinc-950 text-zinc-600"
+                ? "text-text-disabled border-border-muted cursor-not-allowed"
                 : selected
-                  ? "border-zinc-100 bg-zinc-100 text-zinc-950"
-                  : "border-zinc-700 bg-zinc-950 text-zinc-300 hover:border-zinc-400"
+                  ? "bg-bg-selected border-border-selected text-zinc-950"
+                  : "text-text-primary hover:text-text-primary hover:bg-bg-hover border-border-primary"
             }`}
           >
             {mode.label}
@@ -57,10 +66,10 @@ export function InputModeArea({
         type="button"
         disabled={!canClear}
         onClick={onClear}
-        className={`rounded border px-1.5 py-1.5 text-sm font-semibold transition-colors sm:px-3 ${
+        className={`rounded border px-1 py-1 text-sm font-semibold transition-colors sm:px-3 ${
           canClear
-            ? "border-zinc-700 bg-zinc-950 text-zinc-300 hover:border-zinc-400"
-            : "cursor-not-allowed border-zinc-800 bg-zinc-950 text-zinc-600"
+            ? "text-text-primary hover:text-text-primary hover:bg-bg-hover border-border-primary"
+            : "text-text-disabled border-border-muted cursor-not-allowed"
         } `}
       >
         クリア

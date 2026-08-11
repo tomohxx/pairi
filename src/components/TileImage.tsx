@@ -36,25 +36,24 @@ export function TileImage({
   faceDown = false,
   rotateLeft = false,
 }: TileImageProps) {
-  const TileComponent = TileComponents[faceDown ? "back" : `${tile.suit}${tile.index + 1}${tile.isRed ? "r" : ""}`];
   const imageSizeClass = rotateLeft ? tileImageClassBySize.compact : tileImageClassBySize[size];
-  const tileClassName = `block shrink-0 overflow-hidden rounded border border-stone-300/85 w-auto ${imageSizeClass} ${className ? className : "bg-paper-warm"}`;
+  const backgroundClass = faceDown ? "" : "bg-zinc-200";
+  const tileClassName = `block shrink-0 overflow-hidden rounded border border-zinc-200/85 w-auto ${imageSizeClass} ${className ? className : backgroundClass}`;
+  const positionedTileClassName = rotateLeft
+    ? `absolute left-0 origin-top-left -rotate-90 ${compactRotatedTileClass.offset} ${tileClassName}`
+    : tileClassName;
+  const tileElement = faceDown ? (
+    <div className={`aspect-3/4 bg-zinc-950 ${positionedTileClassName}`} />
+  ) : (
+    createElement(TileComponents[`${tile.suit}${tile.index + 1}${tile.isRed ? "r" : ""}`], {
+      focusable: "false",
+      className: positionedTileClassName,
+    })
+  );
 
   if (rotateLeft) {
-    return (
-      <div className={`relative shrink-0 ${compactRotatedTileClass.wrapper}`}>
-        {createElement(TileComponent, {
-          "aria-hidden": "true",
-          focusable: "false",
-          className: `absolute left-0 origin-top-left -rotate-90 ${compactRotatedTileClass.offset} ${tileClassName}`,
-        })}
-      </div>
-    );
+    return <div className={`relative shrink-0 ${compactRotatedTileClass.wrapper}`}>{tileElement}</div>;
   }
 
-  return createElement(TileComponent, {
-    "aria-hidden": "true",
-    focusable: "false",
-    className: tileClassName,
-  });
+  return tileElement;
 }

@@ -32,7 +32,10 @@ jobs:
       - run: cargo install wasm-pack
       - run: npm ci
       - run: npm run build:wasm
-      - run: npm run build
+      - env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_REQUEST_TIMEOUT: ${{ vars.VITE_REQUEST_TIMEOUT }}
+        run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
         with:
