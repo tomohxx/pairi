@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tomohxx.github.io/pairi/sitemap.xml
