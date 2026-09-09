@@ -18,7 +18,7 @@ const winds: { label: string; value: WindType }[] = [
   { label: "北", value: "north" },
 ];
 
-const turns = Array.from({ length: 19 }, (_, value) => value);
+const turns = Array.from({ length: 18 }, (_, value) => value + 1);
 
 type CalculationOptionsProps = {
   useRed: boolean;
