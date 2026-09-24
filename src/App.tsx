@@ -7,6 +7,7 @@ import { InputModeArea } from "./components/InputModeArea";
 import { ResultArea } from "./components/ResultArea";
 import { TileCounts } from "./lib/TileCounts";
 import { Header } from "./components/Header";
+import { About } from "./components/About";
 import { WinProbButton } from "./components/WinProbButton";
 import { Drawer } from "./components/Drawer";
 import { WinProbResultEntry } from "./components/WinProbResultEntry";
@@ -74,6 +75,7 @@ function App() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [nextHistoryEntryId, setNextHistoryEntryId] = useState<number>(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
 
   const tileCounts = new TileCounts(handState, doraIndicators, useRed, threePlayer, numNukidora);
   const maxNumNukidora = 4 - tileCounts.getNumNorthTiles();
@@ -170,7 +172,11 @@ function App() {
 
   return (
     <>
-      <Header title="牌理・牌効率計算ツール" onHistoryOpen={() => setIsDrawerOpen(true)} />
+      <Header
+        title="牌理・牌効率計算ツール"
+        onHistoryOpen={() => setIsDrawerOpen(true)}
+        onAboutOpen={() => setIsAboutOpen(true)}
+      />
       <main className="mx-auto flex min-h-[calc(100svh-3.5rem)] w-full max-w-380 min-w-0 items-stretch px-4 py-6 lg:px-8">
         <section className="grid min-h-0 w-full min-w-0 gap-6 lg:grid-cols-[max-content_minmax(24rem,1fr)]">
           <div className="flex min-h-0 min-w-0 flex-col gap-4">
@@ -282,7 +288,7 @@ function App() {
         </section>
       </main>
 
-      <Drawer open={isDrawerOpen} title="履歴" onClose={() => setIsDrawerOpen(false)}>
+      <Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
         <div className="flex flex-col-reverse gap-5">
           {history.length > 0 ? (
             history.map((entry, index) => (
@@ -293,6 +299,7 @@ function App() {
           )}
         </div>
       </Drawer>
+      <About open={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </>
   );
 }

@@ -4,12 +4,11 @@ import { IoClose } from "react-icons/io5";
 
 type DrawerProps = {
   open: boolean;
-  title: string;
   onClose: () => void;
   children: ReactNode;
 };
 
-export function Drawer({ open, title, onClose, children }: DrawerProps) {
+export function Drawer({ open, onClose, children }: DrawerProps) {
   return (
     <Transition show={open}>
       <Dialog onClose={onClose} className="relative z-50">
@@ -33,13 +32,13 @@ export function Drawer({ open, title, onClose, children }: DrawerProps) {
             leaveFrom="translate-y-0 sm:translate-x-0"
             leaveTo="translate-y-full sm:translate-x-full sm:translate-y-0"
           >
-            <DialogPanel className="border-border-primary flex max-h-[90svh] w-full flex-col rounded-t-lg border bg-zinc-950 shadow-2xl sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-y-0 sm:border-r-0 lg:max-w-2xl">
+            <DialogPanel className="border-border-primary bg-bg-primary flex max-h-[90svh] w-full flex-col rounded-t-lg border shadow-2xl sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-y-0 sm:border-r-0 lg:max-w-2xl">
               <div className="border-border-muted flex h-14 shrink-0 items-center justify-between border-b px-4">
-                <DialogTitle className="font-display text-text-primary font-semibold">{title}</DialogTitle>
+                <DialogTitle className="font-display text-text-primary font-semibold">履歴</DialogTitle>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="text-text-primary hover:text-text-primary hover:bg-bg-hover border-border-primary grid size-9 place-items-center rounded border transition focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
+                  className="text-text-primary hover:bg-bg-hover border-border-primary grid size-9 place-items-center rounded border transition focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:outline-none"
                 >
                   <IoClose />
                 </button>
