@@ -227,14 +227,14 @@ function ResultTable({ entry, open }: ResultTableProps) {
               <SortableHeader column="tile" label="打牌候補" sortState={sortState} onSort={handleSort} />
               <SortableHeader
                 column="tenpaiProb"
-                label="聴牌率 (%)"
+                label="聴牌確率 (%)"
                 numeric
                 sortState={sortState}
                 onSort={handleSort}
               />
               <SortableHeader
                 column="winningProb"
-                label="和了率 (%)"
+                label="和了確率 (%)"
                 numeric
                 sortState={sortState}
                 onSort={handleSort}
