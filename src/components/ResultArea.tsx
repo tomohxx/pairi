@@ -36,8 +36,9 @@ function PairiRow({ discardTileId, waitTileCount, waitTileIds }: PairiRowProps) 
       }
     >
       {discardTileId === undefined ? null : (
-        <div className="shrink-0">
-          <TileImage tile={getTileFromId(discardTileId)} />
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="text-text-primary text-sm font-semibold">打</span>
+          <TileImage tile={getTileFromId(discardTileId)} size="compact" />
         </div>
       )}
 

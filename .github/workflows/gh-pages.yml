@@ -36,6 +36,8 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_REQUEST_TIMEOUT: ${{ vars.VITE_REQUEST_TIMEOUT }}
           VITE_GOOGLE_SITE_VERIFICATION: ${{ vars.VITE_GOOGLE_SITE_VERIFICATION }}
+          VITE_GITHUB_REPOSITORY_URL: ${{ vars.VITE_GITHUB_REPOSITORY_URL }}
+          VITE_CONTACT_X_URL: ${{ vars.VITE_CONTACT_X_URL }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
