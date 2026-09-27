@@ -172,11 +172,7 @@ function App() {
 
   return (
     <>
-      <Header
-        title="牌理・牌効率計算ツール"
-        onHistoryOpen={() => setIsDrawerOpen(true)}
-        onAboutOpen={() => setIsAboutOpen(true)}
-      />
+      <Header onHistoryOpen={() => setIsDrawerOpen(true)} onAboutOpen={() => setIsAboutOpen(true)} />
       <main className="mx-auto flex min-h-[calc(100svh-3.5rem)] w-full max-w-380 min-w-0 items-stretch px-4 py-6 lg:px-8">
         <section className="grid min-h-0 w-full min-w-0 gap-6 lg:grid-cols-[max-content_minmax(24rem,1fr)]">
           <div className="flex min-h-0 min-w-0 flex-col gap-4">
