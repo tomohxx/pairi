@@ -5,7 +5,7 @@ import { CalculationOptions } from "./components/CalculationOptions";
 import type { InputMode, Tile, Meld, HandState, Action, HistoryEntry, WindType } from "./lib/types";
 import { InputModeArea } from "./components/InputModeArea";
 import { ResultArea } from "./components/ResultArea";
-import { TileCounts } from "./lib/TileCounts";
+import { TileCounts } from "./lib/tileCounts";
 import { Header } from "./components/Header";
 import { About } from "./components/About";
 import { WinProbButton } from "./components/WinProbButton";
