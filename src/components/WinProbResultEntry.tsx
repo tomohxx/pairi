@@ -86,7 +86,7 @@ const formatShanten = (shanten: number): string =>
   shanten === -1 ? "和了" : shanten === 0 ? "聴牌" : `${shanten}向聴`;
 const formatElapsed = (microseconds: number): string => (microseconds / 1000).toFixed(1);
 
-type SortColumn = "tile" | "tenpaiProb" | "winningProb" | "expectedScore";
+type SortColumn = "tile" | "tenpaiProb" | "goodWaitTenpaiProb" | "winningProb" | "expectedScore";
 type SortDirection = "ascending" | "descending";
 type SortState = { column: SortColumn; direction: SortDirection } | null;
 
@@ -109,6 +109,8 @@ const compareResults = (left: WinProbResult, right: WinProbResult, column: SortC
       return compareTiles(left.tile, right.tile);
     case "tenpaiProb":
       return left.tenpaiProb[turn] - right.tenpaiProb[turn];
+    case "goodWaitTenpaiProb":
+      return left.goodWaitTenpaiProb[turn] - right.goodWaitTenpaiProb[turn];
     case "winningProb":
       return left.winningProb[turn] - right.winningProb[turn];
     case "expectedScore":
@@ -233,6 +235,13 @@ function ResultTable({ entry, open }: ResultTableProps) {
                 onSort={handleSort}
               />
               <SortableHeader
+                column="goodWaitTenpaiProb"
+                label="良形聴牌確率 (%)"
+                numeric
+                sortState={sortState}
+                onSort={handleSort}
+              />
+              <SortableHeader
                 column="winningProb"
                 label="和了確率 (%)"
                 numeric
@@ -255,6 +264,7 @@ function ResultTable({ entry, open }: ResultTableProps) {
                   <TileImage tile={fromApiTile(result.tile)} size="compact" />
                 </td>
                 <td className="px-2 py-2 text-right tabular-nums">{formatProb(result.tenpaiProb[turn])}</td>
+                <td className="px-2 py-2 text-right tabular-nums">{formatProb(result.goodWaitTenpaiProb[turn])}</td>
                 <td className="px-2 py-2 text-right tabular-nums">{formatProb(result.winningProb[turn])}</td>
                 <td className="px-2 py-2 text-right tabular-nums">{formatScore(result.expectedScore[turn])}</td>
               </tr>

@@ -60,6 +60,7 @@ export type WinProbRequest = {
 export type WinProbResult = {
   tile: string;
   tenpaiProb: number[];
+  goodWaitTenpaiProb: number[];
   winningProb: number[];
   expectedScore: number[];
 };
