@@ -73,7 +73,7 @@ export type WinProbResponse = {
 };
 
 export type HistoryEntry = {
-  id: number;
+  id: string;
   handState: HandState;
   seatWind: WindType;
   roundWind: WindType;

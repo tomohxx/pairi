@@ -2,10 +2,10 @@ import { useState, useReducer } from "react";
 import { InputTileArea } from "./components/InputTileArea";
 import { DisplayArea } from "./components/DisplayArea";
 import { CalculationOptions } from "./components/CalculationOptions";
-import type { InputMode, Tile, Meld, HandState, Action, HistoryEntry, WindType } from "./lib/types";
+import type { InputMode, Tile, Meld, HandState, Action, WindType } from "./lib/types";
 import { InputModeArea } from "./components/InputModeArea";
 import { ResultArea } from "./components/ResultArea";
-import { TileCounts } from "./lib/TileCounts";
+import { TileCounts } from "./lib/tileCounts";
 import { Header } from "./components/Header";
 import { About } from "./components/About";
 import { WinProbButton } from "./components/WinProbButton";
@@ -13,6 +13,7 @@ import { Drawer } from "./components/Drawer";
 import { WinProbResultEntry } from "./components/WinProbResultEntry";
 import { DoraIndicatorsArea } from "./components/DoraIndicatorsArea";
 import { createWinProbRequest, execWinProbApi } from "./lib/winProbApi";
+import { useHistory } from "./hooks/useHistory";
 
 const removeTile = (tiles: Tile[], targetTile: Tile): Tile[] => {
   const targetIndex: number = tiles.findIndex(
@@ -72,8 +73,7 @@ function App() {
   const [roundWind, setRoundWind] = useState<WindType>("east");
   const [tMax, setTMax] = useState<number>(18);
   const [numNukidora, setNumNukidora] = useState<number>(0);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [nextHistoryEntryId, setNextHistoryEntryId] = useState<number>(1);
+  const [history, addHistoryEntry, succeedHistoryEntry, failHistoryEntry] = useHistory();
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
 
@@ -118,28 +118,19 @@ function App() {
       threePlayer,
       threePlayer ? numNukidora : undefined,
     );
-    const id = nextHistoryEntryId;
-    const createdAt = new Date().toISOString();
 
-    setNextHistoryEntryId((prev) => prev + 1);
-    setHistory((prev) => [
-      ...prev,
-      {
-        id,
-        handState,
-        seatWind: request.seatWind,
-        roundWind: request.roundWind,
-        doraIndicators: [...doraIndicators],
-        riichi,
-        tMax: request.tMax,
-        useRed: request.useRed,
-        useExtra: request.useExtra,
-        threePlayer,
-        numNukidora: request.numNukidora,
-        status: "pending",
-        createdAt,
-      },
-    ]);
+    const id = addHistoryEntry({
+      handState,
+      seatWind: request.seatWind,
+      roundWind: request.roundWind,
+      doraIndicators: [...doraIndicators],
+      riichi,
+      tMax: request.tMax,
+      useRed: request.useRed,
+      useExtra: request.useExtra,
+      threePlayer,
+      numNukidora: request.numNukidora,
+    });
     setIsDrawerOpen(true);
 
     void (async () => {
@@ -153,17 +144,9 @@ function App() {
 
       try {
         const result = await execWinProbApi(request, controller.signal);
-        const completedAt = new Date().toISOString();
-
-        setHistory((prev) =>
-          prev.map((entry) => (entry.id === id ? { ...entry, status: "success", completedAt, result } : entry)),
-        );
+        succeedHistoryEntry(id, result);
       } catch {
-        const completedAt = new Date().toISOString();
-
-        setHistory((prev) =>
-          prev.map((entry) => (entry.id === id ? { ...entry, status: "error", completedAt } : entry)),
-        );
+        failHistoryEntry(id);
       } finally {
         window.clearTimeout(timeoutId);
       }
@@ -172,11 +155,7 @@ function App() {
 
   return (
     <>
-      <Header
-        title="牌理・牌効率計算ツール"
-        onHistoryOpen={() => setIsDrawerOpen(true)}
-        onAboutOpen={() => setIsAboutOpen(true)}
-      />
+      <Header onHistoryOpen={() => setIsDrawerOpen(true)} onAboutOpen={() => setIsAboutOpen(true)} />
       <main className="mx-auto flex min-h-[calc(100svh-3.5rem)] w-full max-w-380 min-w-0 items-stretch px-4 py-6 lg:px-8">
         <section className="grid min-h-0 w-full min-w-0 gap-6 lg:grid-cols-[max-content_minmax(24rem,1fr)]">
           <div className="flex min-h-0 min-w-0 flex-col gap-4">
